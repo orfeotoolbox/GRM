@@ -1,6 +1,6 @@
 /*=========================================================================
 
-  Program: Shape Encoder librarie of OBIA (Object Based Image Analysis)
+  Program: Shape Encoder library
   Language:  C++
   author:    Lassalle Pierre
 
