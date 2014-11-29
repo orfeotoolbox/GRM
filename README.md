@@ -7,7 +7,7 @@ Requirements:
 
 On Linux:
 
-Step 1: copy the source code into your favorite path. In the following we assume that
+Step 1: copy the source code into your favorite directory. In the following we assume that
 your path is PATH/grm/
 
 Step 2: Go to PATH/grm/
