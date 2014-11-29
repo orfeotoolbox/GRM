@@ -1,0 +1,10 @@
+author: Pierre Lassalle
+
+Copyright (c) Centre National d'Etudes Spatiales. All rights reserved
+
+This is free software under the GPL v3 licence. See
+http://www.gnu.org/licenses/gpl-3.0.html for details.
+
+This software is distributed WITHOUT ANY WARRANTY; without even
+the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+PURPOSE.
