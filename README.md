@@ -31,8 +31,8 @@ Step 6: make
 
 Step 7: ./BaatzSegmentation --help
 
-3 region merging criteria have been already inmplemented, up to you to add a new one.
-If you are a generous man, you can send me a message to propose your new criterion
+3 region merging criteria have been already implemented, up to you to add a new one.
+If you are a generous man then you can send me a message to propose your new criterion
 at the following email address: lassallepierre34@gmail.com
 
 Enjoy !
