@@ -160,7 +160,7 @@ namespace grm
 	std::shared_ptr<DerivedRegion> 
 	RegionBase<DerivedRegion>::GetClosestNeighbor()
 	{
-		assert(m_Neighbors.size() > 1);
+		assert(m_Neighbors.size() > 0);
 		return std::get<0>(FrontEdgeList());
 	}
 } // end of namespace grm
