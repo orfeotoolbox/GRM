@@ -83,6 +83,7 @@ void
 FLSAlgorithmRM<TInputImage>::Segmentation()
 {
 	bool prev_merged = true;
+	unsigned int step = 0;
 	float threshold = this->m_Parameters*this->m_Parameters;
 
 	MergingCostFunction cost_func = [](RegionPointerType r1, RegionPointerType r2)->double
@@ -97,10 +98,11 @@ FLSAlgorithmRM<TInputImage>::Segmentation()
 		return cost;
 	};
 
-	while(prev_merged)
+	while(prev_merged && step < this->m_NumberOfIterations)
 	{
 		std::cout << "." << std::flush;
 		prev_merged = false;
+		++step;
 
 		this->m_RMHandler.UpdateMergingCosts(this->m_RegionList, cost_func);
 
@@ -126,6 +128,39 @@ FLSAlgorithmRM<TInputImage>::Segmentation()
 		// who have merged into a larger one
 		this->m_RMHandler.RemoveExpiredVertices(this->m_RegionList);
 	}
+
+	if(prev_merged && this->m_BestFitting)
+	{
+		while(prev_merged)
+		{
+			std::cout << "." << std::flush;
+			prev_merged = false;
+
+			this->m_RMHandler.UpdateMergingCosts(this->m_RegionList, cost_func);
+
+			for(auto& r : this->m_RegionList)
+			{
+				// For each explored region, we determine if the LMBF is met
+				auto ref_region = this->m_RMHandler.CheckBF(r, threshold);
+				// If it holds then the pointer to ref_region is not null
+				if(ref_region != nullptr)
+				{
+					// Process to merge the regions
+					// Step 1: Merge the specific attributes
+					UpdateAttribute(ref_region, ref_region->GetClosestNeighbor());
+					// Step 2: Internal update (mandatory)
+					this->m_RMHandler.Update(ref_region, ref_region->GetClosestNeighbor());
+
+					prev_merged = true;
+				}
+			}
+
+			// After one iteration, you have to remove the expired regions, i.e. regions
+			// who have merged into a larger one
+			this->m_RMHandler.RemoveExpiredVertices(this->m_RegionList);
+		}
+	}
+
 	std::cout << "\n";
 }
 

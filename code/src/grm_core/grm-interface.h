@@ -38,6 +38,7 @@ namespace grm
 
 			void InitRegions(RegionListType&);
 			void UpdateMergingCosts(RegionListType&, MergingCostFunction&);
+			RegionPointerType CheckBF(RegionPointerType r, double thresh);
 			RegionPointerType CheckLMBF(RegionPointerType, double);
 			void UpdateContour(RegionPointerType, RegionPointerType);
 			void UpdateNeighborhood(RegionPointerType, RegionPointerType);

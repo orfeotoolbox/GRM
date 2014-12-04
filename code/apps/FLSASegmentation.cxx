@@ -55,10 +55,12 @@ int main(int argc, char **argv)
 bool init_args(int argc, char ** argv, po::options_description& desc, po::variables_map& vm)
 {
 	desc.add_options()
-		("help", "print mandatory arguments")
-		("input", po::value<std::string>(), "set input image file")
-		("output_rgb", po::value<std::string>(), "set output rgb image file")
-		("thresh", po::value<float>(), "set the threshold");
+		("help", "print arguments")
+		("input", po::value<std::string>(), "set input image file (mandatory)")
+		("output_rgb", po::value<std::string>(), "set output rgb image file (mandatory)")
+		("thresh", po::value<float>(), "set the threshold (mandatory)")
+		("iter", po::value<unsigned int>(), "set the number of iterations using LMBF (optional)")
+		("bf", po::value<int>(), "activate the Best Fitting Heuristic");
 
 	po::store(po::parse_command_line(argc, argv, desc), vm);
 	po::notify(vm);

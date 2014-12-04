@@ -100,6 +100,7 @@ void
 BaatzAlgorithmRM<TInputImage>::Segmentation()
 {
 	bool prev_merged = true;
+	unsigned int step = 0;
 	float threshold = this->m_Parameters.m_Scale*this->m_Parameters.m_Scale;
 	float spec_w = this->m_Parameters.m_SpectralWeight;
 	float shap_w = this->m_Parameters.m_ShapeWeight;
@@ -147,10 +148,12 @@ BaatzAlgorithmRM<TInputImage>::Segmentation()
 			return spec_cost;
 	};
 
-	while(prev_merged)
+	while(prev_merged && step < this->m_NumberOfIterations)
 	{
-		std::cout << "." << std::flush;
+		//std::cout << "." << std::flush;
 		prev_merged = false;
+		++step;
+		std::cout << step << std::endl;
 
 		this->m_RMHandler.UpdateMergingCosts(this->m_RegionList, cost_func);
 
@@ -176,6 +179,51 @@ BaatzAlgorithmRM<TInputImage>::Segmentation()
 		// who have merged into a larger one
 		this->m_RMHandler.RemoveExpiredVertices(this->m_RegionList);
 	}
+
+	if(prev_merged && this->m_BestFitting)
+	{
+		while(prev_merged)
+		{
+			//std::cout << "." << std::flush;
+			std::cout << "Best Fitting" << std::endl;
+			prev_merged = false;
+
+			this->m_RMHandler.UpdateMergingCosts(this->m_RegionList, cost_func);
+
+			for(auto& r : this->m_RegionList)
+			{
+				// For each explored region, we determine if the LMBF is met
+				auto ref_region = this->m_RMHandler.CheckBF(r, threshold);
+				// If it holds then the pointer to ref_region is not null
+				if(ref_region != nullptr)
+				{
+					if(ref_region == r->GetClosestNeighbor())
+					{
+						// Process to merge the regions
+						// Step 1: Merge the specific attributes
+						UpdateAttribute(ref_region, r);
+						// Step 2: Internal update (mandatory)
+						this->m_RMHandler.Update(ref_region, r);
+					}
+					else
+					{
+						// Process to merge the regions
+						// Step 1: Merge the specific attributes
+						UpdateAttribute(ref_region, ref_region->GetClosestNeighbor());
+						// Step 2: Internal update (mandatory)
+						this->m_RMHandler.Update(ref_region, ref_region->GetClosestNeighbor());
+					}
+					prev_merged = true;
+				}
+			}
+
+			// After one iteration, you have to remove the expired regions, i.e. regions
+			// who have merged into a larger one
+			this->m_RMHandler.RemoveExpiredVertices(this->m_RegionList);
+		}
+	}
+
+	std::cout << "\n";
 	std::cout << "\n";
 }
 

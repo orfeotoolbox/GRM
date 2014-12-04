@@ -25,9 +25,16 @@
 
 namespace grm
 {
-	/*template<class TInputImage, class TRegion, class TParams>
+	template<class TInputImage, class TRegion, class TParams>
 	void
-	RegionMergingAlgorithm<TInputImage, TRegion, TParams>::*/
+	RegionMergingAlgorithm<TInputImage, TRegion, TParams>::SetBestFitting(int f)
+	{
+		assert(f == 0 || f == 1);
+		if(f)
+			m_BestFitting = true;
+		else
+			m_BestFitting = false;
+	}
 
 	template<class TInputImage, class TRegion, class TParams>
 	void

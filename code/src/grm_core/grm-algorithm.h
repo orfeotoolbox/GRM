@@ -36,7 +36,8 @@ namespace grm
 			typedef typename InterfaceType::MergingCostFunction MergingCostFunction;
 
 			// Empty constructor and destructor
-			RegionMergingAlgorithm(){}
+			RegionMergingAlgorithm() : m_BestFitting{true}, m_NumberOfIterations{70}
+			{}
 			virtual ~RegionMergingAlgorithm(){}
 
 			// Abstract method
@@ -60,6 +61,7 @@ namespace grm
 			SetMacro(std::string, OutputRGB);
 			SetMacro(unsigned int, NumberOfIterations);
 			void SetDimensionForEncoder(unsigned int, unsigned int);
+			void SetBestFitting(int f);
 
 		protected:
 
@@ -71,6 +73,7 @@ namespace grm
 			std::string m_OutputRGB;
 
 			// Algorithm attributes
+			bool m_BestFitting;
 			RegionListType m_RegionList;
 			ParameterType m_Parameters;
 

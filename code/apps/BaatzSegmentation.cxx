@@ -28,7 +28,7 @@ bool init_args(int argc, char ** argv, po::options_description& desc, po::variab
 
 int main(int argc, char **argv)
 {
-	po::options_description desc("Configuration of the Baatz & Schäpe region merging segmentation");
+	po::options_description desc("Configuration of the Baatz & Schâpe region merging segmentation");
 	po::variables_map vm;
 
 	if(init_args(argc, argv, desc, vm))
@@ -56,11 +56,13 @@ bool init_args(int argc, char ** argv, po::options_description& desc, po::variab
 {
 	desc.add_options()
 		("help", "print mandatory arguments")
-		("input", po::value<std::string>(), "set input image file")
-		("output_rgb", po::value<std::string>(), "set output rgb image file")
-		("cw", po::value<float>(), "set the spectral weight")
-		("sw", po::value<float>(), "set the shape weight")
-		("sp", po::value<float>(), "set the scale parameter");
+		("input", po::value<std::string>(), "set input image file (mandatory)")
+		("output_rgb", po::value<std::string>(), "set output rgb image file (mandatory)")
+		("cw", po::value<float>(), "set the spectral weight (mandatory)")
+		("sw", po::value<float>(), "set the shape weight (mandatory)")
+		("sp", po::value<float>(), "set the scale parameter (mandatory)")
+		("iter", po::value<unsigned int>(), "set the number of iterations using LMBF (optional)")
+		("bf", po::value<int>(), "activate the Best Fitting Heuristic (optional)");
 
 	po::store(po::parse_command_line(argc, argv, desc), vm);
 	po::notify(vm);

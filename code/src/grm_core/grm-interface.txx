@@ -152,6 +152,34 @@ namespace grm
 	}
 
 	template<class TRegion>
+	typename Interface<TRegion>::RegionPointerType
+	Interface<TRegion>::CheckBF(RegionPointerType r, double thresh)
+	{
+		assert(r != nullptr);
+		if(r->GetValid())
+		{
+			auto cost = std::get<1>(r->FrontEdgeList());
+			if(cost < thresh)
+			{
+				auto closest_neigh = std::get<0>(r->FrontEdgeList());
+				if(closest_neigh->GetValid())
+				{
+					if(r->GetId() < closest_neigh->GetId())
+						return r;
+					else
+						return closest_neigh;
+				}
+				else
+					return nullptr;
+			}
+			else
+				return nullptr;
+		}
+		else
+			return nullptr;
+	}
+
+	template<class TRegion>
 	void 
 	Interface<TRegion>::UpdateContour(RegionPointerType r1, RegionPointerType r2)
 	{
