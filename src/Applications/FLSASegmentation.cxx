@@ -41,6 +41,7 @@ int main(int argc, char **argv)
 		seg_.SetInput(vm["input"].as<std::string>());
 		seg_.SetOutputRGB(vm["output_rgb"].as<std::string>());
 		seg_.SetParameters(params);
+		seg_.SetNumberOfIterations(vm["iter"].as<unsigned int>());
 
 		seg_.InitFromImage();
 		seg_.Segmentation();

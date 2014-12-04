@@ -41,6 +41,7 @@ int main(int argc, char **argv)
 		seg_.SetInput(vm["input"].as<std::string>());
 		seg_.SetOutputRGB(vm["output_rgb"].as<std::string>());
 		seg_.SetParameters(params);
+		seg_.SetNumberOfIterations(vm["iter"].as<unsigned int>());
 
 		seg_.InitFromImage();
 		seg_.Segmentation();
@@ -61,8 +62,11 @@ bool init_args(int argc, char ** argv, po::options_description& desc, po::variab
 		("cw", po::value<float>(), "set the spectral weight (mandatory)")
 		("sw", po::value<float>(), "set the shape weight (mandatory)")
 		("sp", po::value<float>(), "set the scale parameter (mandatory)")
-		("iter", po::value<unsigned int>(), "set the number of iterations using LMBF (optional)")
-		("bf", po::value<int>(), "activate the Best Fitting Heuristic (optional)");
+		("iter", po::value<unsigned int>(), "set the number of iterations using LMBF\
+ 											(optional [value by default (70)])")
+		("bf", po::value<int>(), "activate the Best Fitting Heuristic \
+								[1: activated 0: desactivated] \
+								(optional [activated by default])");
 
 	po::store(po::parse_command_line(argc, argv, desc), vm);
 	po::notify(vm);
