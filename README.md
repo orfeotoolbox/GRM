@@ -25,14 +25,17 @@ cmake \
 -DGDAL_CONFIG:FILEPATH=/usr/bin/gdal-config \
 -DGDAL_INCLUDE_DIR:PATH=/usr/include/gdal \
 -DGDAL_LIBRARY:FILEPATH=/usr/lib/libgdal.so \
-../code/
+../src/
 
 Step 6: make
 
-Step 7: ./BaatzSegmentation --help
+Step 7: cd Applications | ./BaatzSegmentation --help
 
 3 region merging criteria have been already implemented, up to you to add a new one.
 If you are a generous man then you can send me a message to propose your new criterion
 at the following email address: lassallepierre34@gmail.com
+
+For more explanation about this library, go to this site:
+	http://pierre33.github.io/
 
 Enjoy !
