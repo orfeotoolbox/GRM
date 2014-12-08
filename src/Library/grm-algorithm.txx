@@ -54,7 +54,17 @@ namespace grm
 		m_RMHandler.InitRegions(m_RegionList);
 	}
 
-	/*template<class TInputImage, class TRegion, class TParams>
+	template<class TInputImage, class TRegion, class TParams>
+	void
+	RegionMergingAlgorithm<TInputImage, TRegion, TParams>::Run()
+	{
+		InitFromImage();
+		Segmentation();
+		WriteRGBOutputImage();
+		WriteLabelOutputImage();
+	}
+
+	template<class TInputImage, class TRegion, class TParams>
 	void
 	RegionMergingAlgorithm<TInputImage, TRegion, TParams>::WriteLabelOutputImage()
 	{
@@ -82,14 +92,23 @@ namespace grm
 		label_img->SetRegions(region);
 		label_img->Allocate();
 
+		for(unsigned int x = 0; x < size[0]; ++x)
+		{
+			for(unsigned int y = 0; y < size[1]; ++y)
+			{
+				index[0] = x;
+				index[1] = y;
+				label_img->SetPixel(index, 0);
+			}
+		}
+
 		long unsigned int l = 1; // Lower value of the label
 		std::for_each(m_RegionList.begin(), m_RegionList.end(), [&](RegionPointerType r){
 			auto pixels = m_RMHandler.GenerateAllPixels(r);
 			std::for_each(pixels.begin(), pixels.end(), [&](long unsigned int p){
 				index[0] = p % size[0];
 				index[1] = p / size[0];
-				auto label_pix = label_img->GetPixel(index);
-				label_img->SetPixel(index, label_pix);
+				label_img->SetPixel(index, l);
 			});
 			++l;
 		});
@@ -98,7 +117,7 @@ namespace grm
 		label_writer->SetFileName(m_OutputLabel);
 		label_writer->SetInput(label_img);
 		label_writer->Update();
-	}*/
+	}
 
 	template<class TInputImage, class TRegion, class TParams>
 	void

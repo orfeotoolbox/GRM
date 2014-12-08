@@ -19,12 +19,14 @@
 
 #include "macro-generator.h"
 
+#include <cassert>
 #include <memory>
 #include <array>
 #include <vector>
 #include <tuple>
 #include <bitset>
 #include <utility>
+#include <algorithm>
 
 namespace grm
 {

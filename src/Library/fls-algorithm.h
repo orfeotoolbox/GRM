@@ -27,7 +27,7 @@ class FlsRegion : public grm::RegionBase<FlsRegion>
 		std::vector<float> m_Means;
 };
 
-typedef double FLSParams;
+typedef float FLSParams;
 
 template<class TInputImage>
 class FLSAlgorithmRM : public grm::RegionMergingAlgorithm<TInputImage, 

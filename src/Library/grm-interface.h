@@ -46,7 +46,7 @@ namespace grm
 			void RemoveExpiredVertices(RegionListType& graph);
 
 			std::vector<long unsigned int> GenerateFrontierPixels(RegionPointerType);
-			//std::vector<long unsigned int> GenerateAllPixels(RegionPointerType);
+			std::vector<long unsigned int> GenerateAllPixels(RegionPointerType);
 
 			// Get / Set methods
 			std::pair<unsigned int, unsigned int> GetDimensionOfInputImage();

@@ -433,131 +433,196 @@ namespace shpenc
 		direction = 3;
 	}
 
+
+	bool ShapeEncoder::GetCollisionAtNorth(unsigned int idx,
+											const std::vector<short>& bbox_array,
+											unsigned int bbox_cols,
+											unsigned int bbox_rows)
+	{
+		assert(idx >= 0 && idx < bbox_cols * bbox_rows);
+		long int tmp_idx = idx - bbox_cols;
+
+		if(bbox_array[tmp_idx] == 1)
+			return true;
+
+		while(tmp_idx > 0)
+		{
+			if(bbox_array[tmp_idx] == 1)
+				return true;
+			tmp_idx -= bbox_cols;
+		}
+		return false;
+	}
+
+	bool ShapeEncoder::GetCollisionAtNorthEast(unsigned int idx,
+											const std::vector<short>& bbox_array,
+											unsigned int bbox_cols,
+											unsigned int bbox_rows)
+	{
+		assert(idx >= 0 && idx < bbox_cols * bbox_rows);
+		long int tmp_idx = idx - bbox_cols + 1;
+
+		if(bbox_array[tmp_idx] == 1)
+			return true;
+
+		while(tmp_idx > 0 && (tmp_idx % bbox_cols) != 0)
+		{
+			if(bbox_array[tmp_idx] == 1)
+				return true;
+			tmp_idx = tmp_idx - bbox_cols + 1;
+		}
+		return false;
+	}
+
+	bool ShapeEncoder::GetCollisionAtEast(unsigned int idx,
+										const std::vector<short>& bbox_array,
+										unsigned int bbox_cols,
+										unsigned int bbox_rows)
+	{
+		assert(idx >= 0 && idx < bbox_cols * bbox_rows);
+		long int tmp_idx = idx + 1;
+
+
+		if(bbox_array[tmp_idx] == 1)
+			return true;
+
+		while((tmp_idx % bbox_cols) != 0)
+		{
+			if(bbox_array[tmp_idx] == 1)
+				return true;
+			++tmp_idx;
+		}
+		return false;
+	}
+
+	bool ShapeEncoder::GetCollisionAtSouthEast(unsigned int idx,
+										const std::vector<short>& bbox_array,
+										unsigned int bbox_cols,
+										unsigned int bbox_rows)
+	{
+		assert(idx >= 0 && idx < bbox_cols * bbox_rows);
+		long int tmp_idx = idx + 1 + bbox_cols;
+
+		if(bbox_array[tmp_idx] == 1)
+			return true;
+
+		while(tmp_idx < (bbox_cols * bbox_rows) &&
+			(tmp_idx % bbox_cols) != 0)
+		{
+			if(bbox_array[tmp_idx] == 1)
+				return true;
+			tmp_idx = tmp_idx + 1 + bbox_cols;
+		}
+		return false;
+	}
+
+	bool ShapeEncoder::GetCollisionAtSouth(unsigned int idx,
+										const std::vector<short>& bbox_array,
+										unsigned int bbox_cols,
+										unsigned int bbox_rows)
+	{
+		assert(idx >= 0 && idx < bbox_cols * bbox_rows);
+		long int tmp_idx = idx + bbox_cols;
+
+		if(bbox_array[tmp_idx] == 1)
+			return true;
+
+		while(tmp_idx < (bbox_cols * bbox_rows))
+		{
+			if(bbox_array[tmp_idx] == 1)
+				return true;
+			tmp_idx += bbox_cols;
+		}
+		return false;
+	}
+
+	bool ShapeEncoder::GetCollisionAtSouthWest(unsigned int idx,
+											const std::vector<short>& bbox_array,
+											unsigned int bbox_cols,
+											unsigned int bbox_rows)
+	{
+		assert(idx >= 0 && idx < bbox_cols * bbox_rows);
+		long int tmp_idx = idx + bbox_cols - 1;
+
+		if(bbox_array[tmp_idx] == 1)
+			return true;
+
+		while(tmp_idx < (bbox_cols * bbox_rows) &&
+				(tmp_idx % bbox_cols) != bbox_cols - 1)
+		{
+			if(bbox_array[tmp_idx] == 1)
+				return true;
+			tmp_idx = tmp_idx + bbox_cols - 1;
+		}
+		return false;
+	}
+
+	bool ShapeEncoder::GetCollisionAtWest(unsigned int idx,
+											const std::vector<short>& bbox_array,
+											unsigned int bbox_cols,
+											unsigned int bbox_rows)
+	{
+		assert(idx >= 0 && idx < bbox_cols * bbox_rows);
+		long int tmp_idx = idx - 1;
+
+		if(bbox_array[tmp_idx] == 1)
+			return true;
+
+		while((tmp_idx % bbox_cols) != bbox_cols - 1)
+		{
+			if(bbox_array[tmp_idx] == 1)
+				return true;
+			tmp_idx -= 1;
+		}
+		return false;
+	}
+
+	bool ShapeEncoder::GetCollisionAtNorthWest(unsigned int idx,
+											const std::vector<short>& bbox_array,
+											unsigned int bbox_cols,
+											unsigned int bbox_rows)
+	{
+		assert(idx >= 0 && idx < bbox_cols * bbox_rows);
+		long int tmp_idx = idx - bbox_cols - 1;
+
+		if(bbox_array[tmp_idx] == 1)
+			return true;
+
+		while(tmp_idx > 0 && (tmp_idx % bbox_cols) != bbox_cols - 1)
+		{
+			if(bbox_array[tmp_idx] == 1)
+				return true;
+			tmp_idx = tmp_idx - bbox_cols - 1;
+		}
+		return false;
+	}
+
 	bool ShapeEncoder::IsInternalPixel(unsigned int curr_idx, std::vector<short>& bbox_array, 
 										unsigned int bbox_size_x, unsigned int bbox_size_y)
 	{
-		const unsigned int bbox_len = bbox_size_x * bbox_size_y;
-		long int tmp_idx;
-		// Check if a pixel is at the top
-		tmp_idx = (long int)curr_idx - (long int)bbox_size_x;
-		while(tmp_idx >= 0)
-		{
-			if(bbox_array[tmp_idx] == 1)
-				break;
-			else
-				tmp_idx -= bbox_size_x;
-		}
-		if(tmp_idx < 0)
+		if(!GetCollisionAtNorth(curr_idx, bbox_array, bbox_size_x, bbox_size_y))
 			return false;
-
-		// Check if a pixel is at the top right
-		tmp_idx = curr_idx - bbox_size_x + 1;
-		while( (tmp_idx >= 0) && ((tmp_idx % bbox_size_x) > 0))
-		{
-			if(bbox_array[tmp_idx] == 1)
-				break;
-			else
-			{
-				tmp_idx++;
-				tmp_idx -= bbox_size_x;
-			}
-		}
-
-		if( (tmp_idx < 0) || ((tmp_idx % bbox_size_x) == 0))
+		if(!GetCollisionAtNorthEast(curr_idx, bbox_array, bbox_size_x, bbox_size_y))
 			return false;
-
-		// Check if a pixel is at the right
-		tmp_idx = curr_idx + 1;
-		while((tmp_idx % bbox_size_x) > 0)
-		{
-			if(bbox_array[tmp_idx] == 1)
-				break;
-			else
-				tmp_idx++;
-		}
-
-		if((tmp_idx % bbox_size_x) == 0)
+		if(!GetCollisionAtEast(curr_idx, bbox_array, bbox_size_x, bbox_size_y))
 			return false;
-
-		// Check if a pixel is at the bottom right
-		tmp_idx = curr_idx + bbox_size_x + 1;
-		while( (tmp_idx < bbox_len) && ((tmp_idx % bbox_size_x) > 0))
-		{
-			if(bbox_array[tmp_idx] == 1)
-				break;
-			else
-			{
-				tmp_idx++;
-				tmp_idx += bbox_size_x;
-			}
-		}
-
-		if( (tmp_idx >= bbox_len) || ((tmp_idx % bbox_size_x) == 0))
+		if(!GetCollisionAtSouthEast(curr_idx, bbox_array, bbox_size_x, bbox_size_y))
 			return false;
-
-		// Check if a pixel is at the bottom
-		tmp_idx = curr_idx + bbox_size_x;
-		while(tmp_idx < bbox_len)
-		{
-			if(bbox_array[tmp_idx] == 1)
-				break;
-			else
-				tmp_idx += bbox_size_x;
-		}
-
-		if(tmp_idx >= bbox_len)
+		if(!GetCollisionAtSouth(curr_idx, bbox_array, bbox_size_x, bbox_size_y))
 			return false;
-
-		// Check if a pixel is at the bottom left
-		tmp_idx = curr_idx + bbox_size_x - 1;
-		while((tmp_idx < bbox_len) && ((tmp_idx % bbox_size_x) < (bbox_size_x - 1)))
-		{
-			if(bbox_array[tmp_idx] == 1)
-				break;
-			else
-			{
-				tmp_idx--;
-				tmp_idx += bbox_size_x;
-			}
-		}
-
-		if((tmp_idx >= bbox_len) || ((tmp_idx % bbox_size_x) == (bbox_size_x - 1)))
+		if(!GetCollisionAtSouthWest(curr_idx, bbox_array, bbox_size_x, bbox_size_y))
 			return false;
-
-		// Check if the pixel is at the left
-		tmp_idx = curr_idx - 1;
-		while((tmp_idx % bbox_size_x) < (bbox_size_x - 1))
-		{
-			if(bbox_array[tmp_idx] == 1)
-				break;
-			else
-				tmp_idx--;
-		}
-
-		if(((tmp_idx % bbox_size_x) == (bbox_size_x - 1)))
+		if(!GetCollisionAtWest(curr_idx, bbox_array, bbox_size_x, bbox_size_y))
 			return false;
-
-		// Check if the pixel is at the top left
-		tmp_idx = curr_idx - 1 - bbox_size_x;
-		while((tmp_idx >= 0) && (tmp_idx % bbox_size_x) < (bbox_size_x - 1))
-		{
-			if(bbox_array[tmp_idx] == 1)
-				break;
-			else
-			{
-				tmp_idx--;
-				tmp_idx -= bbox_size_x;
-			}
-		}
-
-		if(((tmp_idx % bbox_size_x) == (bbox_size_x - 1)) || tmp_idx < 0)
+		if(!GetCollisionAtNorthWest(curr_idx, bbox_array, bbox_size_x, bbox_size_y))
 			return false;
 
 		return true;
-
 	}
 
-	/*std::vector<long unsigned int> ShapeEncoder::GenerateAllPixels(long unsigned int id, Contour& contour, BoundingBox& bounding_box)
+	std::vector<long unsigned int> ShapeEncoder::GenerateAllPixels(long unsigned int id, 
+																	Contour& contour, 
+																	BoundingBox& bounding_box)
 	{
 		// Generate the border pixels id in the coordinnate system of the image
 		auto border_pixels = GeneratePixels(id,contour);
@@ -577,21 +642,25 @@ namespace shpenc
 		pixels.insert(pixels.begin(), border_pixels.begin(), border_pixels.end());
 		bool internal = true;
 		unsigned int tmp_idx, curr_idx;
-		for(unsigned int r = 0; r < bbox_size_y; r++)
+		for(unsigned int r = 1; r < bbox_size_y - 1; r++)
 		{
-			for(unsigned int c = 0; c < bbox_size_x; c++)
+			for(unsigned int c = 1; c < bbox_size_x - 1; c++)
 			{
 				curr_idx = r*bbox_size_x + c;
 				if(bbox_array[curr_idx] != 1)
 				{
-					if(IsInternalPixel(curr_idx, bbox_array, bbox_size_x, bbox_size_y))
+					auto internal = IsInternalPixel(curr_idx, bbox_array, bbox_size_x, bbox_size_y);
+					bbox_array[curr_idx] = 1;
+					if(internal)
+					{
 						pixels.push_back(ToImgId(curr_idx, bounding_box));
+					}
 				}
 			}
 		}
 
 		return pixels;
-	}*/
+	}
 
 }
 

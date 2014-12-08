@@ -14,80 +14,48 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-// Boost headers (mandatory)
-#include <boost/program_options/cmdline.hpp>
-#include <boost/program_options/parsers.hpp>
-#include <boost/program_options/options_description.hpp>
-#include <boost/program_options/variables_map.hpp>
-
+#include <iostream>
 // Your algorithm header file
 #include "fls-algorithm.h"
 
-namespace po = boost::program_options;
-bool init_args(int argc, char ** argv, po::options_description& desc, po::variables_map& vm);
-
 int main(int argc, char **argv)
 {
-	po::options_description desc("Configuration of the Full Lambda Schedule region merging segmentation");
-	po::variables_map vm;
-
-	if(init_args(argc, argv, desc, vm))
+	if(argc < 5 || argc > 7)
 	{
-		typedef otb::VectorImage<float, 2> ImageType;
-		typedef FLSAlgorithmRM<ImageType> SegmenterType;
-
-		FLSParams params = vm["thresh"].as<float>();
-		SegmenterType seg_;
-		seg_.SetInput(vm["input"].as<std::string>());
-		seg_.SetOutputRGB(vm["output_rgb"].as<std::string>());
-		seg_.SetParameters(params);
-		seg_.SetNumberOfIterations(vm["iter"].as<unsigned int>());
-
-		seg_.InitFromImage();
-		seg_.Segmentation();
-		seg_.WriteRGBOutputImage();
-
-		return 0;
-	}
-	else
+		std::cout << "###############      Manual     #############################\n\n\n"
+				<< "Usage " << argv[0] << "\n\n\n"
+				<< " -- [input image (tif, jpg, png) <mandatory>]\n"
+				<< " -- [output rgb image (tif, jpg, png) <mandatory>]\n"
+				<< " -- [output label image (tif) <mandatory>]\n"
+				<< " -- [lambda threshold <mandatory>]\n"
+				<< " -- [number of iterations using the Local Mutual Best Fitting heuristic (70 by default) <optional>]\n"
+				<< " -- [activation of the Best Fitting heuristic (value = 0 (desactivated) or 1 (activated) \
+					- activated by default) <optional>]\n\n\n"
+				<< "################################################################\n";
 		return 1;
-}
-
-bool init_args(int argc, char ** argv, po::options_description& desc, po::variables_map& vm)
-{
-	desc.add_options()
-		("help", "print arguments")
-		("input", po::value<std::string>(), "set input image file (mandatory)")
-		("output_rgb", po::value<std::string>(), "set output rgb image file (mandatory)")
-		("thresh", po::value<float>(), "set the threshold (mandatory)")
-		("iter", po::value<unsigned int>(), "set the number of iterations using LMBF (optional)")
-		("bf", po::value<int>(), "activate the Best Fitting Heuristic");
-
-	po::store(po::parse_command_line(argc, argv, desc), vm);
-	po::notify(vm);
-
-	if (vm.count("help")) {
-		std::cout << desc << "\n";
-		return false;
 	}
 
-	if (!vm.count("input")) {
-		std::cout << "The input image file was not set (--input).\n";
-		std::cout << desc << "\n";
-		return false;
-	}
+	const std::string inputFileName = argv[1];
+	const std::string outputFileName = argv[2];
+	const std::string outputLabelFileName = argv[3];
+	float lambda = atof(argv[4]);
 
-	if (!vm.count("output_rgb")) {
-		std::cout << "The output rgb file was not set (--output_rgb).\n";
-		std::cout << desc << "\n";
-		return false;
-	}
+	typedef otb::VectorImage<float, 2> ImageType;
+	typedef FLSAlgorithmRM<ImageType> SegmenterType;
 
-	if(!vm.count("thresh")){
-		std::cout << "The threshold was not set (--thresh).\n";
-		std::cout << desc << "\n";
-		return false;
-	}
+	FLSParams params = lambda;
+	SegmenterType seg_;
+	seg_.SetInput(inputFileName);
+	seg_.SetOutputRGB(outputFileName);
+	seg_.SetOutputLabel(outputLabelFileName);
+	seg_.SetParameters(params);
 
-	return true;
+	if(argc >= 6)
+		seg_.SetNumberOfIterations(static_cast<unsigned int>(atoi(argv[5])));
+	if(argc == 7)
+		seg_.SetBestFitting(atoi(argv[6]));
+
+	seg_.Run();
+
+	return 0;
 }

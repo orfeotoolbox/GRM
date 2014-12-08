@@ -150,10 +150,9 @@ BaatzAlgorithmRM<TInputImage>::Segmentation()
 
 	while(prev_merged && step < this->m_NumberOfIterations)
 	{
-		//std::cout << "." << std::flush;
+		std::cout << "." << std::flush;
 		prev_merged = false;
 		++step;
-		std::cout << step << std::endl;
 
 		this->m_RMHandler.UpdateMergingCosts(this->m_RegionList, cost_func);
 
@@ -184,8 +183,7 @@ BaatzAlgorithmRM<TInputImage>::Segmentation()
 	{
 		while(prev_merged)
 		{
-			//std::cout << "." << std::flush;
-			std::cout << "Best Fitting" << std::endl;
+			std::cout << "." << std::flush;
 			prev_merged = false;
 
 			this->m_RMHandler.UpdateMergingCosts(this->m_RegionList, cost_func);
@@ -222,8 +220,6 @@ BaatzAlgorithmRM<TInputImage>::Segmentation()
 			this->m_RMHandler.RemoveExpiredVertices(this->m_RegionList);
 		}
 	}
-
-	std::cout << "\n";
 	std::cout << "\n";
 }
 

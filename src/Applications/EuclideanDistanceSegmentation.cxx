@@ -14,77 +14,50 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-// Boost headers (mandatory)
-#include <boost/program_options/cmdline.hpp>
-#include <boost/program_options/parsers.hpp>
-#include <boost/program_options/options_description.hpp>
-#include <boost/program_options/variables_map.hpp>
+#include <iostream>
 
 // Your algorithm header file
 #include "euc-dist-algorithm.h"
 
-namespace po = boost::program_options;
-bool init_args(int argc, char ** argv, po::options_description& desc, po::variables_map& vm);
-
 int main(int argc, char **argv)
 {
-	po::options_description desc("Configuration of the Euclidean distance region merging segmentation");
-	po::variables_map vm;
-
-	if(init_args(argc, argv, desc, vm))
+	if(argc < 6 || argc > 8)
 	{
-		typedef otb::VectorImage<float, 2> ImageType;
-		typedef EuclideanDistanceRM<ImageType> SegmenterType;
-
-		EucDistParams params = {vm["euc_thresh"].as<float>(), 0};
-		SegmenterType seg_;
-		seg_.SetInput(vm["input"].as<std::string>());
-		seg_.SetOutputRGB(vm["output_rgb"].as<std::string>());
-		seg_.SetParameters(params);
-
-		seg_.InitFromImage();
-		seg_.Segmentation();
-		seg_.WriteRGBOutputImage();
-
-		return 0;
-	}
-	else
+		std::cout << "###############      Manual     #############################\n\n\n"
+				<< "Usage " << argv[0] << "\n\n\n"
+				<< " -- [input image (tif, jpg, png) <mandatory>]\n"
+				<< " -- [output rgb image (tif, jpg, png) <mandatory>]\n"
+				<< " -- [output label image (tif) <mandatory>]\n"
+				<< " -- [maximum distance <mandatory>]\n"
+				<< " -- [minimum distance <mandatory>]\n"
+				<< " -- [number of iterations using the Local Mutual Best Fitting heuristic (70 by default) <optional>]\n"
+				<< " -- [activation of the Best Fitting heuristic (value = 0 (desactivated) or 1 (activated) \
+					- activated by default) <optional>]\n\n\n"
+				<< "################################################################\n";
 		return 1;
-}
-
-bool init_args(int argc, char ** argv, po::options_description& desc, po::variables_map& vm)
-{
-	desc.add_options()
-		("help", "print mandatory arguments")
-		("input", po::value<std::string>(), "set input image file")
-		("output_rgb", po::value<std::string>(), "set output rgb image file")
-		("euc_thresh", po::value<float>(), "set the euclidean threshold");
-
-	po::store(po::parse_command_line(argc, argv, desc), vm);
-	po::notify(vm);
-
-	if (vm.count("help")) {
-		std::cout << desc << "\n";
-		return false;
 	}
 
-	if (!vm.count("input")) {
-		std::cout << "The input image file was not set (--input).\n";
-		std::cout << desc << "\n";
-		return false;
-	}
+	const std::string inputFileName = argv[1];
+	const std::string outputFileName = argv[2];
+	const std::string outputLabelFileName = argv[3];
+	const float max_dist = atof(argv[4]);
+	float min_dist = atof(argv[5]);
 
-	if (!vm.count("output_rgb")) {
-		std::cout << "The output rgb file was not set (--output_rgb).\n";
-		std::cout << desc << "\n";
-		return false;
-	}
+	typedef otb::VectorImage<float, 2> ImageType;
+	typedef EuclideanDistanceRM<ImageType> SegmenterType;
 
-	if(!vm.count("euc_thresh")){
-		std::cout << "The Euclidean threshold was not set (--euc_thresh).\n";
-		std::cout << desc << "\n";
-		return false;
-	}
+	EucDistParams params = {max_dist, min_dist};
+	SegmenterType seg_;
+	seg_.SetInput(inputFileName);
+	seg_.SetOutputRGB(outputFileName);
+	seg_.SetOutputLabel(outputLabelFileName);
+	seg_.SetParameters(params);
+	if(argc >= 7)
+		seg_.SetNumberOfIterations(static_cast<unsigned int>(atoi(argv[6])));
+	if(argc == 8)
+		seg_.SetBestFitting(atoi(argv[7]));
 
-	return true;
+	seg_.Run();
+
+	return 0;
 }

@@ -42,12 +42,12 @@ namespace grm
 		return m_ShpEncoder.GeneratePixels(r->GetId(), r->GetContour());
 	}
 
-	/*template<class TRegion>
+	template<class TRegion>
 	std::vector<long unsigned int> 
 	Interface<TRegion>::GenerateAllPixels(RegionPointerType r)
 	{
 		return m_ShpEncoder.GenerateAllPixels(r->GetId(), r->GetContour(), r->GetBbox());
-	}*/
+	}
 
 	template<class TRegion>
 	void

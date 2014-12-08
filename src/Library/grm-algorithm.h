@@ -44,9 +44,10 @@ namespace grm
 			virtual void InitFromImage() = 0;
 			virtual void UpdateAttribute(RegionPointerType, RegionPointerType) = 0;
 			virtual void Segmentation() = 0;
+			virtual void Run();
 
 			// No abstract method
-			//virtual void WriteLabelOutputImage();
+			virtual void WriteLabelOutputImage();
 			virtual void WriteRGBOutputImage();
 
 			// Get / Set methods

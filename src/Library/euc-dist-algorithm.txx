@@ -81,9 +81,9 @@ template<class TInputImage>
 void 
 EuclideanDistanceRM<TInputImage>::Segmentation()
 {
-	unsigned int final_thresh = static_cast<unsigned int>(this->m_Parameters.m_FinalThresh);
-	float curr_threshold;
-	bool has_merged;
+	bool prev_merged = true;
+	float threshold;
+	unsigned int step = 0;
 
 	MergingCostFunction cost_func = [](RegionPointerType r1, RegionPointerType r2)->double
 	{
@@ -94,21 +94,23 @@ EuclideanDistanceRM<TInputImage>::Segmentation()
 		return cost;
 	};
 
-	while(this->m_Parameters.m_CurrThresh < this->m_Parameters.m_FinalThresh)
+	while(this->m_Parameters.m_InitialThresh < this->m_Parameters.m_FinalThresh)
 	{
-		has_merged = true;
-		curr_threshold = static_cast<float>(this->m_Parameters.m_CurrThresh * this->m_Parameters.m_CurrThresh);
-		while(has_merged)
+		prev_merged = true;
+		threshold = static_cast<float>(this->m_Parameters.m_InitialThresh * 
+										this->m_Parameters.m_InitialThresh);
+		std::cout << "." << std::flush;
+		while(prev_merged && step < this->m_NumberOfIterations)
 		{
-			has_merged = false;
+			prev_merged = false;
+			++step;
 			this->m_RMHandler.UpdateMergingCosts(this->m_RegionList, cost_func);
-			std::cout << "." << std::flush;
 
 			// Do a loop on the regions of the graph
 			for(auto& r : this->m_RegionList)
 			{
 				// For each explored region, we determine if the LMBF is met
-				auto ref_region = this->m_RMHandler.CheckLMBF(r, curr_threshold);
+				auto ref_region = this->m_RMHandler.CheckLMBF(r, threshold);
 				// If it holds then the pointer to ref_region is not null
 				if(ref_region != nullptr)
 				{
@@ -118,7 +120,7 @@ EuclideanDistanceRM<TInputImage>::Segmentation()
 					// Step 2: Internal update (mandatory)
 					this->m_RMHandler.Update(ref_region, ref_region->GetClosestNeighbor());
 
-					has_merged = true;
+					prev_merged = true;
 				}
 			}
 
@@ -127,7 +129,47 @@ EuclideanDistanceRM<TInputImage>::Segmentation()
 			this->m_RMHandler.RemoveExpiredVertices(this->m_RegionList);
 		}
 
-		++this->m_Parameters.m_CurrThresh;
+		if(prev_merged && this->m_BestFitting)
+		{
+			while(prev_merged)
+			{
+				prev_merged = false;
+
+				this->m_RMHandler.UpdateMergingCosts(this->m_RegionList, cost_func);
+
+				for(auto& r : this->m_RegionList)
+				{
+					// For each explored region, we determine if the LMBF is met
+					auto ref_region = this->m_RMHandler.CheckBF(r, threshold);
+					// If it holds then the pointer to ref_region is not null
+					if(ref_region != nullptr)
+					{
+						if(ref_region == r->GetClosestNeighbor())
+						{
+							// Process to merge the regions
+							// Step 1: Merge the specific attributes
+							UpdateAttribute(ref_region, r);
+							// Step 2: Internal update (mandatory)
+							this->m_RMHandler.Update(ref_region, r);
+						}
+						else
+						{
+							// Process to merge the regions
+							// Step 1: Merge the specific attributes
+							UpdateAttribute(ref_region, ref_region->GetClosestNeighbor());
+							// Step 2: Internal update (mandatory)
+							this->m_RMHandler.Update(ref_region, ref_region->GetClosestNeighbor());
+						}
+						prev_merged = true;
+					}
+				}
+
+				// After one iteration, you have to remove the expired regions, i.e. regions
+				// who have merged into a larger one
+				this->m_RMHandler.RemoveExpiredVertices(this->m_RegionList);
+			}
+		}
+		++this->m_Parameters.m_InitialThresh;
 	}
 	std::cout << "\n";
 }

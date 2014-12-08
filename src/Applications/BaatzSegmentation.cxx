@@ -14,97 +14,52 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-// Boost headers (mandatory)
-#include <boost/program_options/cmdline.hpp>
-#include <boost/program_options/parsers.hpp>
-#include <boost/program_options/options_description.hpp>
-#include <boost/program_options/variables_map.hpp>
+#include <iostream>
 
 // Your algorithm header file
 #include "baatz-algorithm.h"
 
-namespace po = boost::program_options;
-bool init_args(int argc, char ** argv, po::options_description& desc, po::variables_map& vm);
-
 int main(int argc, char **argv)
 {
-	po::options_description desc("Configuration of the Baatz & Schâpe region merging segmentation");
-	po::variables_map vm;
-
-	if(init_args(argc, argv, desc, vm))
+	if(argc < 7 || argc > 9)
 	{
-		typedef otb::VectorImage<float, 2> ImageType;
-		typedef BaatzAlgorithmRM<ImageType> SegmenterType;
-
-		BaatzParams params = {vm["cw"].as<float>(), vm["sw"].as<float>(), vm["sp"].as<float>()};
-		SegmenterType seg_;
-		seg_.SetInput(vm["input"].as<std::string>());
-		seg_.SetOutputRGB(vm["output_rgb"].as<std::string>());
-		seg_.SetParameters(params);
-		seg_.SetNumberOfIterations(vm["iter"].as<unsigned int>());
-
-		seg_.InitFromImage();
-		seg_.Segmentation();
-		seg_.WriteRGBOutputImage();
-
-		return 0;
-	}
-	else
+		std::cout << "###############      Manual     #############################\n\n\n"
+				<< "Usage " << argv[0] << "\n\n\n"
+				<< " -- [input image (tif, jpg, png) <mandatory>]\n"
+				<< " -- [output rgb image (tif, jpg, png) <mandatory>]\n"
+				<< " -- [output label image (tif) <mandatory>]\n"
+				<< " -- [spectral weight (value >= 0 and <= 1) <mandatory>]\n"
+				<< " -- [shape weight (value >= 0 and <= 1) <mandatory>]\n"
+				<< " -- [scale parameter (positive value) <mandatory>]\n"
+				<< " -- [number of iterations using the Local Mutual Best Fitting heuristic (70 by default) <optional>]\n"
+				<< " -- [activation of the Best Fitting heuristic (value = 0 (desactivated) or 1 (activated) \
+					- activated by default) <optional>]\n\n\n"
+				<< "################################################################\n";
 		return 1;
-}
-
-bool init_args(int argc, char ** argv, po::options_description& desc, po::variables_map& vm)
-{
-	desc.add_options()
-		("help", "print mandatory arguments")
-		("input", po::value<std::string>(), "set input image file (mandatory)")
-		("output_rgb", po::value<std::string>(), "set output rgb image file (mandatory)")
-		("cw", po::value<float>(), "set the spectral weight (mandatory)")
-		("sw", po::value<float>(), "set the shape weight (mandatory)")
-		("sp", po::value<float>(), "set the scale parameter (mandatory)")
-		("iter", po::value<unsigned int>(), "set the number of iterations using LMBF\
- 											(optional [value by default (70)])")
-		("bf", po::value<int>(), "activate the Best Fitting Heuristic \
-								[1: activated 0: desactivated] \
-								(optional [activated by default])");
-
-	po::store(po::parse_command_line(argc, argv, desc), vm);
-	po::notify(vm);
-
-	if (vm.count("help")) {
-		std::cout << desc << "\n";
-		return false;
 	}
 
-	if (!vm.count("input")) {
-		std::cout << "The input image file was not set (--input).\n";
-		std::cout << desc << "\n";
-		return false;
-	}
+	const std::string inputFileName = argv[1];
+	const std::string outputFileName = argv[2];
+	const std::string outputLabelFileName = argv[3];
+	const float cw = atof(argv[4]);
+	const float sw = atof(argv[5]);
+	const float sp = atof(argv[6]);
 
-	if (!vm.count("output_rgb")) {
-		std::cout << "The output rgb file was not set (--output_rgb).\n";
-		std::cout << desc << "\n";
-		return false;
-	}
+	typedef otb::VectorImage<float, 2> ImageType;
+	typedef BaatzAlgorithmRM<ImageType> SegmenterType;
 
-	if(!vm.count("cw")){
-		std::cout << "The spectral weight was not set (--cw).\n";
-		std::cout << desc << "\n";
-		return false;
-	}
+	BaatzParams params = {cw, sw, sp};
+	SegmenterType seg_;
+	seg_.SetInput(inputFileName);
+	seg_.SetOutputRGB(outputFileName);
+	seg_.SetOutputLabel(outputLabelFileName);
+	seg_.SetParameters(params);
+	if(argc >= 8)
+		seg_.SetNumberOfIterations(static_cast<unsigned int>(atoi(argv[7])));
+	if(argc == 9)
+		seg_.SetBestFitting(atoi(argv[8]));
 
-	if(!vm.count("sw")){
-		std::cout << "The shape weight was not set (--sw).\n";
-		std::cout << desc << "\n";
-		return false;
-	}
+	seg_.Run();
 
-	if(!vm.count("sp")){
-		std::cout << "The scale parameter was not set (--sp).\n";
-		std::cout << desc << "\n";
-		return false;
-	}
-
-	return true;
+	return 0;
 }

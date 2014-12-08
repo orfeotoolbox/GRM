@@ -19,6 +19,8 @@
 
 #include "macro-generator.h"
 #include "mask-neighborhood.h"
+#include <cassert>
+#include <iostream>
 #include <vector>
 #include <bitset>
 #include <algorithm>
@@ -45,7 +47,7 @@ namespace shpenc
 								long unsigned int, Contour&,
 								BoundingBox&);
 			std::vector<long unsigned int> GeneratePixels(long unsigned int, Contour&);
-			//std::vector<long unsigned int> GenerateAllPixels(long unsigned int, Contour&, BoundingBox&);
+			std::vector<long unsigned int> GenerateAllPixels(long unsigned int, Contour&, BoundingBox&);
 
 		private:
 
@@ -78,6 +80,46 @@ namespace shpenc
 										   short&,
 									       Contour&,
 										   const unsigned int);
+
+			bool GetCollisionAtNorth(unsigned int,
+								const std::vector<short>&,
+								unsigned int,
+								unsigned int);
+
+			bool GetCollisionAtNorthEast(unsigned int,
+								const std::vector<short>&,
+								unsigned int,
+								unsigned int);
+
+			bool GetCollisionAtEast(unsigned int,
+								const std::vector<short>&,
+								unsigned int,
+								unsigned int);
+
+			bool GetCollisionAtSouthEast(unsigned int,
+								const std::vector<short>&,
+								unsigned int,
+								unsigned int);
+
+			bool GetCollisionAtSouth(unsigned int,
+								const std::vector<short>&,
+								unsigned int,
+								unsigned int);
+
+			bool GetCollisionAtSouthWest(unsigned int,
+									const std::vector<short>&,
+									unsigned int,
+									unsigned int);
+
+			bool GetCollisionAtWest(unsigned int,
+								const std::vector<short>&,
+								unsigned int,
+								unsigned int);
+
+			bool GetCollisionAtNorthWest(unsigned int,
+									const std::vector<short>&,
+									unsigned int,
+									unsigned int);
 
 			bool IsInternalPixel(unsigned int cidx, std::vector<short>& bbox_array, 
 								unsigned int bbox_size_x, unsigned int bbox_size_y);

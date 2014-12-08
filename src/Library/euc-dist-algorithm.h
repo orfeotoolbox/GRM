@@ -33,7 +33,7 @@ class EucDistRegion : public grm::RegionBase<EucDistRegion>
 struct EucDistParams
 {
 	float m_FinalThresh;
-	unsigned int m_CurrThresh;
+	float m_InitialThresh;
 };
 
 template<class TInputImage>

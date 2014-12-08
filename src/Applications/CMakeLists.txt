@@ -17,15 +17,12 @@
 #=========================================================================
 add_executable(EuclideanDistanceSegmentation EuclideanDistanceSegmentation.cxx)
 target_link_libraries(EuclideanDistanceSegmentation 
-					GRM 
-					boost_program_options)
+					GRM)
 
 add_executable(FLSASegmentation FLSASegmentation.cxx)
 target_link_libraries(FLSASegmentation 
-						GRM
-						boost_program_options)
+						GRM)
 
 add_executable(BaatzSegmentation BaatzSegmentation.cxx)
 target_link_libraries(BaatzSegmentation 
-					GRM
-					boost_program_options)
+					GRM)
