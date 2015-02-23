@@ -15,14 +15,8 @@
 #     PURPOSE.  See the above copyright notices for more information.
 
 #=========================================================================
-add_executable(EuclideanDistanceSegmentation EuclideanDistanceSegmentation.cxx)
-target_link_libraries(EuclideanDistanceSegmentation 
-					GRM)
+add_library(OTBGRM 
+			lsrmContourOperations.cpp
+			lsrmNeighborhood.cpp)
 
-add_executable(FLSASegmentation FLSASegmentation.cxx)
-target_link_libraries(FLSASegmentation 
-						GRM)
-
-add_executable(BaatzSegmentation BaatzSegmentation.cxx)
-target_link_libraries(BaatzSegmentation 
-					GRM)
+target_link_libraries(OTBGRM OTBCommon OTBIO)

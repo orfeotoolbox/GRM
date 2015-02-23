@@ -15,6 +15,5 @@
 #     PURPOSE.  See the above copyright notices for more information.
 
 #=========================================================================
-file(GLOB SRC "*.cxx")
-add_library(GRM ${SRC})
-target_link_libraries(GRM OTBCommon OTBIO)
+add_executable(RegionMergingSegmentation RegionMergingSegmentation.cxx)
+target_link_libraries(RegionMergingSegmentation OTBGRM)
