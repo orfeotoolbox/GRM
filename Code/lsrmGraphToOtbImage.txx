@@ -29,19 +29,13 @@ namespace lsrm
 		
 		// Start at 1 (value 0 can be used for invalid pixels)
 		long unsigned int label = 1;
-		for(NodeConstIterator nit = graph.m_Nodes.begin();
-			nit != graph.m_Nodes.end(); ++nit)
+		for(auto& region : graph.m_Nodes)
 		{
-			ContourOperations::PixelList pixels = ContourOperations::GeneratePixels((*nit)->m_Id,
-																					(*nit)->m_Contour,
-																					(*nit)->m_Bbox,
-																					width);
 
-			for (ContourOperations::PixelConstIterator pit = pixels.begin();
-				 pit != pixels.end(); ++pit)
+			for (auto& pix: region->m_Pixels)
 			{
-				index[0] = (*pit) % width;
-				index[1] = (*pit) / width;
+				index[0] = pix % width;
+				index[1] = pix / width;
 				label_img->SetPixel(index, label);
 			}
 			++label;
@@ -95,21 +89,15 @@ namespace lsrm
 
 		srand(time(NULL));
 		unsigned char c1, c2, c3;
-		for(NodeConstIterator nit = graph.m_Nodes.begin();
-			nit != graph.m_Nodes.end(); ++nit)
+		for(auto& region : graph.m_Nodes)
 		{
-			ContourOperations::PixelList pixels = ContourOperations::GeneratePixels((*nit)->m_Id,
-																					(*nit)->m_Contour,
-																					(*nit)->m_Bbox,
-																					width);
 			c1 = rand() % 256;
 			c2 = rand() % 256;
 			c3 = rand() % 256;
-			for (ContourOperations::PixelConstIterator pit = pixels.begin();
-				 pit != pixels.end(); ++pit)
+			for (auto& pix : region->m_Pixels)
 			{
-				index[0] = (*pit) % width;
-				index[1] = (*pit) / width;
+				index[0] = pix % width;
+				index[1] = pix / width;
 				pixelValue[0] = c1;
 				pixelValue[1] = c2;
 				pixelValue[2] = c3;
@@ -121,50 +109,6 @@ namespace lsrm
 		RGBWriterType::Pointer rgb_writer = RGBWriterType::New();
 		rgb_writer->SetInput(rgb_img);
 		rgb_writer->SetFileName(outputFileName);
-		rgb_writer->Update();
-	}
-
-	template<class TGraph>
-	void GraphToOtbImage<TGraph>::WriteContourImage(const GraphType& graph,
-													const std::string& inputFileName,
-													const std::string& outputFileName)
-	{
-		typedef unsigned char RGBPixelType;
-		typedef otb::VectorImage<RGBPixelType, 2> RGBImageType;
-		typedef typename RGBImageType::IndexType RGBIndexType;
-		
-		typedef otb::ImageFileReader<RGBImageType> RGBImageReaderType;
-		typedef otb::ImageFileWriter<RGBImageType> RGBImageWriterType;
-
-		RGBImageReaderType::Pointer rgb_reader = RGBImageReaderType::New();
-		rgb_reader->SetFileName(inputFileName);
-		rgb_reader->Update();
-		RGBImageType::Pointer rgb_img = rgb_reader->GetOutput();
-		RGBIndexType index;
-
-		const unsigned int width = rgb_img->GetLargestPossibleRegion().GetSize()[0];
-
-		for(NodeConstIterator nit = graph.m_Nodes.begin();
-			nit != graph.m_Nodes.end(); ++nit)
-		{
-			ContourOperations::PixelList pixels = ContourOperations::GenerateBorderPixels((*nit)->m_Id,
-																						  (*nit)->m_Contour,
-																						  width);
-			for (ContourOperations::PixelConstIterator pit = pixels.begin();
-				 pit != pixels.end(); ++pit)
-			{
-				index[0] = (*pit) % width;
-				index[1] = (*pit) / width;
-				typename RGBImageType::PixelType rgb_pix = rgb_img->GetPixel(index);
-				for(unsigned int b=0; b<rgb_img->GetNumberOfComponentsPerPixel(); b++)
-					rgb_pix[b] = 0;
-				rgb_img->SetPixel(index, rgb_pix);
-			}
-		}
-
-		RGBImageWriterType::Pointer rgb_writer = RGBImageWriterType::New();
-		rgb_writer->SetFileName(outputFileName);
-		rgb_writer->SetInput(rgb_img);
 		rgb_writer->Update();
 	}
 	

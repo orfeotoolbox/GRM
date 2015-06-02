@@ -16,7 +16,6 @@
 
 #=========================================================================
 add_library(OTBGRM 
-			lsrmContourOperations.cpp
 			lsrmNeighborhood.cpp)
 
 target_link_libraries(OTBGRM OTBCommon OTBIO)

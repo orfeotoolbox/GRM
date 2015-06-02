@@ -6,7 +6,6 @@
 #include <otbImageFileReader.h>
 #include <otbImageFileWriter.h>
 #include "lsrmGraph.h"
-#include "lsrmContourOperations.h"
 #include <string>
 #include <stdlib.h>
 #include <time.h>
@@ -54,13 +53,7 @@ namespace lsrm
 		static void WriteOutputRGBImage(const GraphType& graph,
 										const unsigned int width,
 										const unsigned int height,
-										const std::string& outputFileName);
-
-		static void WriteContourImage(const GraphType& graph,
-									  const std::string& inputFileName,
-									  const std::string& outputFileName);
-
-		
+										const std::string& outputFileName);		
 	};
 	
 } // end of namespace lsrm

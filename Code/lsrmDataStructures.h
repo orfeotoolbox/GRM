@@ -1,14 +1,11 @@
 #ifndef __LSRM_DATA_STRUCTURES_H
 #define __LSRM_DATA_STRUCTURES_H
+#include <stdexcept>
 #include <bitset>
 #include <vector>
 
 namespace lsrm
 {	
-	typedef std::bitset<2> ContourElem;
-	typedef std::vector<ContourElem> Contour;
-	typedef typename Contour::iterator ContourIterator;
-	typedef typename Contour::const_iterator ContourConstIterator;
 
 	struct BoundingBox
 	{
@@ -24,6 +21,25 @@ namespace lsrm
 		/* Height */
 		unsigned int m_H;	
 	};
+	
+	BoundingBox MergeBoundingBoxes(const BoundingBox& bb1,
+								   const BoundingBox& bb2)
+	{
+		long unsigned int min_ux, min_uy, max_xw, max_yh;
+		BoundingBox bb;
+
+		min_ux = std::min(bb1.m_UX, bb2.m_UX);
+		min_uy = std::min(bb1.m_UY, bb2.m_UY);
+		max_xw = std::max(bb1.m_UX + bb1.m_W, bb2.m_UX + bb2.m_W);
+		max_yh = std::max(bb1.m_UY + bb1.m_H, bb2.m_UY + bb2.m_H);
+
+		bb.m_UX = min_ux;
+		bb.m_UY = min_uy;
+		bb.m_W = max_xw - min_ux;
+		bb.m_H = max_yh - min_uy;
+
+		return bb;
+	}
 	
 } // end of namespace lsrm
 

@@ -2,7 +2,6 @@
 #define __LSRM_GRAPH_OPERATIONS_H
 #include "lsrmGraph.h"
 #include "lsrmNeighborhood.h"
-#include "lsrmContourOperations.h"
 #include <iostream>
 #include <cassert>
 #include <limits>
@@ -30,59 +29,6 @@ namespace lsrm
 		typedef typename GraphType::EdgeIteratorType EdgeIterator;
 		typedef typename GraphType::EdgeConstIteratorType EdgeConstIterator;
 
-		/* Some static constants */
-		static const long long unsigned int NodeSize = sizeof(NodeType) + sizeof(NodePointerType);
-		static const long long unsigned int EdgeSize = sizeof(EdgeType);
-
-		/* Functors (former than lambda expression...
-		   but it can accept all compiler' versions) */
-		struct EdgeEqualTo
-		{
-			explicit EdgeEqualTo(NodePointerType t_) : m_T(t_)
-				{assert(m_T != NULL);}
-			
-			bool operator()(const EdgeType& e)
-				{
-					return e.m_Target == m_T;
-				}
-
-			NodePointerType  m_T;
-		};
-
-		struct IsExpired
-		{
-			IsExpired () {}
-			bool operator()(NodePointerType  n) const
-				{
-					return n->m_Expired;
-				}
-		};
-
-		struct IsInSet
-		{
-			explicit IsInSet(std::set<long unsigned int>& ur) : m_UsedRegions(ur)
-				{
-					
-				}
-
-			bool operator()(const EdgeType& e)
-				{
-					if(m_UsedRegions.find(e.m_Target->m_Id) == m_UsedRegions.end())
-						return true;
-					else
-						return false;
-				}
-				
-			std::set<long unsigned int>& m_UsedRegions;
-		};
-
-		struct NodePtrComparator : public std::unary_function<NodePointerType, bool>
-		{
-			NodePointerType nn;
-			explicit NodePtrComparator(NodePointerType n) : nn(n){}
-			bool operator()(NodePointerType v) { return v == nn;}
-		};
-		
 
 		/*
 		 * Given the size of the input image and the mask of the
@@ -282,110 +228,6 @@ namespace lsrm
 															   const unsigned int numberOfIterations,
 															   const unsigned int width,
 															   const unsigned int height);
-
-		/*
-		 *
-		 */
-		static void LargeScaleInitNodes(GraphType& graph,
-										SegmenterType& seg,
-										const unsigned int tileWidth,
-										const unsigned int tileHeight,
-										const unsigned int nbTilesX,
-										const unsigned int nbTilesY,
-										const unsigned int tileId,
-										const unsigned int margin,
-										const unsigned int imageWidth,
-										const unsigned int imageHeight,
-										CONNECTIVITY mask);
-
-		/*
-		 *
-		 */
-		static bool IsOnTileBorder(const unsigned int pixelRow,
-								   const unsigned int pixelCol,
-								   const unsigned int lowerRow,
-								   const unsigned int upperRow,
-								   const unsigned int lowerCol,
-								   const unsigned int upperCol,
-								   const unsigned int imageWidth,
-								   const unsigned int imageHeight);
-
-		static bool IsOnTileBorderAndAdjacentTileBorder(const unsigned int pixelRow,
-														const unsigned int pixelCol,
-														const unsigned int lowerRow,
-														const unsigned int upperRow,
-														const unsigned int lowerCol,
-														const unsigned int upperCol,
-														const unsigned int imageWidth,
-														const unsigned int imageHeight);
-		/*
-		 *
-		 */
-		static bool IsBboxStrictlyInsideTile(NodePointerType n,
-											 const unsigned int lowerRow,
-											 const unsigned int upperRow,
-											 const unsigned int lowerCol,
-											 const unsigned int upperCol);
-
-		/*
-		 *
-		 */
-		static bool IsBboxInsideTile(NodePointerType n,
-									 const unsigned int lowerRow,
-									 const unsigned int upperRow,
-									 const unsigned int lowerCol,
-									 const unsigned int upperCol);
-		
-		/*
-		 *
-		 */
-		static void RemoveEdgesToUnstableRegion(NodePointerType r);
-		
-		/*
-		 *
-		 */
-		static void RemoveUnstableRegions(GraphType& graph,
-										  unsigned int lowerRow,
-										  unsigned int upperRow,
-										  unsigned int lowerCol,
-										  unsigned int upperCol,
-										  unsigned int imageWidth);
-
-		/*
-		 *
-		 */
-		static void AddNeighboringLayer(NodePointerType n,
-										GraphType& g,
-										std::set<long unsigned int>& bset);
-		
-		/*
-		 *
-		 */
-		static void BuildStabilityMargins(const GraphType& graph,
-										  GraphType& subgraph,
-										  const unsigned int lowerRow,
-										  const unsigned int upperRow,
-										  const unsigned int lowerCol,
-										  const unsigned int upperCol,
-										  const unsigned int imageWidth,
-										  const unsigned int imageHeight);
-
-		/*
-		 *
-		 */
-		static void MergeGraphs(GraphType& graph,
-								const unsigned int lowerRow,
-								const unsigned int upperRow,
-								const unsigned int lowerCol,
-								const unsigned int upperCol,
-								const unsigned int imageWidth,
-								const unsigned int imageHeight,
-								bool useless);
-
-		/*
-		 *
-		 */
-		static long long unsigned int GetMemorySpace(const GraphType& graph);
 	};
 } // end of namespace lsrm
 

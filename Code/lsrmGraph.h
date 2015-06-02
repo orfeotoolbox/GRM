@@ -1,22 +1,20 @@
 #ifndef __LSRM_GRAPH_H
 #define __LSRM_GRAPH_H
-#include <boost/shared_ptr.hpp>
 #include "lsrmDataStructures.h"
 
 namespace lsrm
 {
 	struct BaseNode
 	{
-		BaseNode(){}
-		
-		virtual ~BaseNode() {}
-
 		/* Node already merged. */
 		bool m_Valid;
 		
 		/* Node has to be removed from the graph. */
 		bool m_Expired;
 
+		/* Does the node merge at the previous iteration */
+		bool m_IsMerged;
+		
 		/* Perimeter of the region */
 		unsigned int m_Perimeter;
 
@@ -35,39 +33,47 @@ namespace lsrm
 		 */
 		BoundingBox m_Bbox;
 
-		/*
-		  Contour of the region
-		 */
-		Contour m_Contour;
+		/* List of pixels contained in the regions */
+		std::vector<unsigned long int> m_Pixels; 
 	};
 
 	template<class DerivedNode>
-	struct Node : BaseNode
-	{
-		struct Edge
+		struct NeighborType
 		{
-			/* Boundary length between two adjacent regions.*/
-			unsigned int m_Boundary;
-			
-			/* Fusion cost (similarity measure) with the target node. */
-			float m_Cost;
-			
-			/* Pointer to a neighboring node. */
-			boost::shared_ptr<DerivedNode> m_Target;
-		};
-		
-		Node(){};
-		virtual ~Node() {}
+			typedef std::weak_ptr<DerivedNode> WeakDerived;
+			typedef std::shared_ptr<DerivedNode> SharedDerived;
 
-		std::vector<Edge> m_Edges;
+			WeakDerived m_Target;
+			float  m_Cost;
+			unsigned int m_Boundary;
+			bool m_CostUpdated;
+
+		    NeighborType(WeakDerived ptr, double w, unsigned int c) :
+			m_Target(ptr), m_Cost(w), m_Boundary(c), m_CostUpdated(false) {}
+			
+			inline SharedDerived GetRegion()
+				{
+					SharedDerived ptr(m_Target.lock());
+					if(!ptr)
+						throw std::runtime_error("lss_GenericLMBFRegionMergingHandler.h - NeighborType::GetRegion - Region pointer is not valid");
+					return ptr;
+				}
+		};
+	
+
+	template<class DerivedNode>
+		struct Node : BaseNode
+	{
+		typedef NeighborType<DerivedNode> CRPTNeighborType;
+		std::vector<CRPTNeighborType> m_Edges;
 	};
 
 	template<class TNode>
 	struct Graph
 	{
 		typedef TNode NodeType;
-		typedef typename NodeType::Edge EdgeType;
-		typedef boost::shared_ptr<NodeType> NodePointerType;
+		typedef std::shared_ptr<NodeType> NodePointerType;
+		typedef typename NodeType::CRPTNeighborType EdgeType;
 		typedef std::vector<NodePointerType> NodeListType;
 		typedef typename NodeListType::iterator NodeIteratorType;
 		typedef typename NodeListType::const_iterator NodeConstIteratorType;
@@ -75,7 +81,7 @@ namespace lsrm
 		typedef typename EdgeListType::iterator EdgeIteratorType;
 		typedef typename EdgeListType::const_iterator EdgeConstIteratorType;
 		
-		std::vector< boost::shared_ptr<TNode> > m_Nodes; 
+		std::vector< NodePointerType > m_Nodes; 
 	};
 	
 } // end of namespace lsrm

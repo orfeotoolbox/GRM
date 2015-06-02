@@ -51,7 +51,6 @@ namespace lsrm
 	float
 	BaatzSegmenter<TImage>::ComputeMergingCost(NodePointerType n1, NodePointerType n2)
 	{
-		const std::size_t bands = n1->m_Means.size();
 		const unsigned int a1 = n1->m_Area, a2 = n2->m_Area, a_sum = a1 + a2;
 
 		float spect_cost = 0.0f;
@@ -77,7 +76,7 @@ namespace lsrm
 			const unsigned int boundary = (GraphOperatorType::FindEdge(n1, n2))->m_Boundary;
 			const float p3 = p1 + p2 - 2 * static_cast<float>(boundary);
 			
-			const BoundingBox merged_bbox = ContourOperations::MergeBoundingBoxes(n1->m_Bbox, n2->m_Bbox);
+			const BoundingBox merged_bbox = MergeBoundingBoxes(n1->m_Bbox, n2->m_Bbox);
 			const float bb1_perimeter = static_cast<float>(2*n1->m_Bbox.m_W + 2*n1->m_Bbox.m_H);
 			const float bb2_perimeter = static_cast<float>(2*n2->m_Bbox.m_W + 2*n2->m_Bbox.m_H);
 			const float mbb_perimeter = static_cast<float>(2 * merged_bbox.m_W + 2 * merged_bbox.m_H);
@@ -141,11 +140,6 @@ namespace lsrm
 									this->m_ImageWidth,
 									this->m_ImageHeight,
 									this->m_LabelImageFileName);
-
-		if(!this->m_ContourImageFileName.empty())
-			IOType::WriteContourImage(this->m_Graph,
-									  this->m_InputFileName,
-									  this->m_LabelImageFileName);
 	}
 } // end of namespace lsrm
 
