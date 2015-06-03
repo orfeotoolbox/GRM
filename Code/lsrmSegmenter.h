@@ -3,6 +3,7 @@
 #include "macro-generator.h"
 #include "lsrmGraph.h"
 #include "lsrmGraphOperations.h"
+#include "lsrmGraphToOtbImage.h"
 
 namespace lsrm
 {
@@ -21,6 +22,9 @@ namespace lsrm
 		typedef typename GraphType::EdgeType EdgeType;
 		typedef GraphOperations<Self> GraphOperatorType;
 		typedef typename GraphOperatorType::NodePointerType NodePointerType;
+		typedef GraphToOtbImage<GraphType> IOType;
+		typedef typename IOType::LabelImageType LabelImageType;
+		typedef typename IOType::ClusteredImageType ClusteredImageType;
 
 		/* Default constructor and destructor */
 		
@@ -30,7 +34,7 @@ namespace lsrm
 		/*
 		 * This method performs the region merging segmentation.
 		 */
-		virtual void RunSegmentation() = 0;
+		virtual void Update() = 0;
 
 		/* methods to overload */
 
@@ -66,17 +70,30 @@ namespace lsrm
 		 * const std::string& inputFileName : input image path
 		 */
 		virtual void InitFromImage() = 0;
+
+		/* Return the label image */
+		inline typename LabelImageType::Pointer GetLabeledClusteredOutput()
+			{
+				IOType io;
+				auto labelImg = io.GetLabelImage(this->m_Graph, this->m_ImageWidth, this->m_ImageHeight);
+				return labelImg;
+			}
+
+		inline typename ClusteredImageType::Pointer GetClusteredImageOutput()
+			{
+				IOType io;
+				auto clusteredImg = io.GetClusteredOutput(this->m_Graph, this->m_ImageWidth, this->m_ImageHeight);
+				return clusteredImg;
+			}
 		
 		/* Set methods */
 		SetMacro(bool, DoBFSegmentation);
 		SetMacro(unsigned int, NumberOfIterations);
 		SetMacro(float, Threshold);
 		SetMacro(ParamType, Param);
-		SetMacro(std::string, InputFileName);
-		SetMacro(std::string, ClusteredImageFileName);
-		SetMacro(std::string, LabelImageFileName);
-		SetMacro(std::string, ContourImageFileName);
-
+		inline void SetInput(TImage * in){ m_InputImage = in;}
+		
+		
 	protected:
 
 		/* Activate the Best Fitting heuristic */
@@ -98,10 +115,9 @@ namespace lsrm
 		unsigned int m_ImageWidth; // Number of columns
 		unsigned int m_ImageHeight; // NUmber of rows
 		unsigned int m_NumberOfComponentsPerPixel; // Number of spectral bands
-		std::string m_InputFileName;
-		std::string m_ClusteredImageFileName;
-		std::string m_LabelImageFileName;
-		std::string m_ContourImageFileName;
+
+		/* Pointer to the input image to segment */
+		TImage * m_InputImage;
 	};
 } // end of namespace lsrm
 

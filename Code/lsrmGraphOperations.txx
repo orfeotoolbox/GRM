@@ -5,22 +5,16 @@
 namespace lsrm
 {	
 	template<class TSegmenter>
-	void GraphOperations<TSegmenter>::InitNodes(GraphType& graph,
+	void GraphOperations<TSegmenter>::InitNodes(ImageType * inputImg,
+												GraphType& graph,
 												SegmenterType& seg,
-												const std::string& inputFileName,
 												CONNECTIVITY mask)
 	{
 		unsigned int width, height;
 		
 		{
-			typedef typename TSegmenter::ImageType ImageType;
-			typedef otb::ImageFileReader<ImageType> ReaderType;
-			typename ReaderType::Pointer reader = ReaderType::New();
-			reader->SetFileName(inputFileName);
-			reader->UpdateOutputInformation();
-
-			width = reader->GetOutput()->GetLargestPossibleRegion().GetSize()[0];
-			height = reader->GetOutput()->GetLargestPossibleRegion().GetSize()[1];
+			width = inputImg->GetLargestPossibleRegion().GetSize()[0];
+			height = inputImg->GetLargestPossibleRegion().GetSize()[1];
 		}
 		
 		const long unsigned int num_nodes = width * height;
@@ -430,17 +424,25 @@ namespace lsrm
 																			const unsigned int height)
 	{
 		bool merged = true;
+		unsigned int maxNumberOfIterations;
+		if(numberOfIterations < 1)
+			maxNumberOfIterations = 75;
+		else
+			maxNumberOfIterations = numberOfIterations;
+		
 		unsigned int iterations = 0;
 
 		while(merged &&
-			  iterations < numberOfIterations &&
+			  iterations < maxNumberOfIterations &&
 			  graph.m_Nodes.size() > 1)
 		{
+			std::cout << "." << std::flush;
 			++iterations;
 
 			merged = PerfomOneIterationWithBF(graph, seg, threshold,
 											  width, height);
 		}
+		std::cout << std::endl;
 
 		if(graph.m_Nodes.size() < 2)
 			return false;
@@ -452,6 +454,9 @@ namespace lsrm
 } // end of namespace lsrm
 
 #endif
+
+
+
 
 
 

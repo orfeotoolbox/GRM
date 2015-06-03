@@ -1,7 +1,8 @@
 #include <iostream>
 #include <otbImage.h>
-#include <otbImageFileReader.h>
 #include <otbVectorImage.h>
+#include <otbImageFileReader.h>
+#include <otbImageFileWriter.h>
 #include "lsrmBaatzSegmenter.h"
 
 int main(int argc, char *argv[])
@@ -20,29 +21,50 @@ int main(int argc, char *argv[])
 	}
 
 	lsrm::BaatzParam params;
-	const char * input_image = argv[1];
-	const char * clustered_image = argv[2];
-	const char * label_image = argv[3];
+	const char * inFileName = argv[1];
+	const char * clusterFileName = argv[2];
+	const char * labelFileName = argv[3];
 	params.m_SpectralWeight = atof(argv[4]);
 	params.m_ShapeWeight = atof(argv[5]);
 	float sqrt_scale = atof(argv[6]);
 	const float scale = sqrt_scale * sqrt_scale;
 
 	typedef float PixelType;
-	typedef otb::VectorImage<PixelType, 2> ImageType;
-	typedef lsrm::BaatzSegmenter<ImageType> SegmenterType;
+	typedef unsigned long int LabelPixelType;
+	typedef unsigned char ClusterPixelType;
+	typedef otb::VectorImage<PixelType, 2> InputImageType;
+	typedef otb::Image<LabelPixelType, 2> LabelImageType;
+	typedef otb::VectorImage<ClusterPixelType, 2> ClusterImageType;
+	typedef otb::ImageFileReader<InputImageType> InputImageReaderType;
+	typedef otb::ImageFileWriter<LabelImageType> LabelImageWriterType;
+	typedef otb::ImageFileWriter<ClusterImageType> ClusterImageWriterType;
+	typedef lsrm::BaatzSegmenter<InputImageType> SegmenterType;
 
+	auto imgReader = InputImageReaderType::New();
+	imgReader->SetFileName(inFileName);
+	imgReader->Update();
+
+	
 	SegmenterType segmenter;
 	segmenter.SetParam(params);
 	segmenter.SetThreshold(scale);
-	segmenter.SetInputFileName(input_image);
-	segmenter.SetClusteredImageFileName(clustered_image);
-	segmenter.SetLabelImageFileName(label_image);
-	
-	segmenter.RunSegmentation();
+	segmenter.SetInput(imgReader->GetOutput());
+	segmenter.Update();
+
+	auto labelWriter = LabelImageWriterType::New();
+	labelWriter->SetFileName(labelFileName);
+	labelWriter->SetInput(segmenter.GetLabeledClusteredOutput());
+	labelWriter->Update();
+
+	auto clusterWriter = ClusterImageWriterType::New();
+	clusterWriter->SetFileName(clusterFileName);
+	clusterWriter->SetInput(segmenter.GetClusteredImageOutput());
+	clusterWriter->Update();
 	
     return 0;
 }
+
+
 
 
 

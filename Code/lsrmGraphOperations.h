@@ -18,6 +18,7 @@ namespace lsrm
 		
 		/* Some convenient typedefs */
 		typedef TSegmenter SegmenterType;
+		typedef typename SegmenterType::ImageType ImageType;
 		typedef typename SegmenterType::GraphType GraphType;
 		typedef typename GraphType::NodeType NodeType;
 		typedef typename GraphType::EdgeType EdgeType;
@@ -40,9 +41,9 @@ namespace lsrm
 		 * const unsigned int height: height of the input image
 		 * CONNECTIVITY mask : mask of the neighborhood (4X4 or 8X8)
 		 */
-		static void InitNodes(GraphType& graph,
+		static void InitNodes(ImageType * inputImg,
+							  GraphType& graph,
 							  SegmenterType& seg,
-							  const std::string& inputFileName,
 							  CONNECTIVITY mask);
 
 		/*

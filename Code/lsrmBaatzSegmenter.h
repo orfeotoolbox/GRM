@@ -1,7 +1,6 @@
 #ifndef __LSRM_BAATZ_SEGMENTER_H
 #define __LSRM_BAATZ_SEGMENTER_H
 #include "lsrmSegmenter.h"
-#include "lsrmGraphToOtbImage.h"
 /*
  * Tutorial : Implementation of the Baatz & Schape criterion
  *
@@ -88,7 +87,7 @@ namespace lsrm
 
 		BaatzSegmenter();
 		
-		void RunSegmentation();
+		void Update();
 		float ComputeMergingCost(NodePointerType n1, NodePointerType n2);
 		void UpdateSpecificAttributes(NodePointerType n1, NodePointerType n2);
 		void InitFromImage();
