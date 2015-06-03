@@ -91,6 +91,7 @@ namespace lsrm
 		for(auto& r : graph.m_Nodes)
 		{
 			min_cost = std::numeric_limits<float>::max();
+			min_id = 0;
 			idx = 0;
 			min_idx = 0;
 
