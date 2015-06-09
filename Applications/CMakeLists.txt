@@ -17,3 +17,9 @@
 #=========================================================================
 add_executable(RegionMergingSegmentation RegionMergingSegmentation.cxx)
 target_link_libraries(RegionMergingSegmentation OTBGRM)
+
+add_executable(SpringSegmentation SpringSegmentation.cxx)
+target_link_libraries(SpringSegmentation OTBGRM)
+
+add_executable(FullLambdaScheduleSegmentation FullLambdaScheduleSegmentation.cxx)
+target_link_libraries(FullLambdaScheduleSegmentation OTBGRM)

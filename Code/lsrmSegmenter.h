@@ -28,7 +28,10 @@ namespace lsrm
 
 		/* Default constructor and destructor */
 		
-		Segmenter(){};
+		Segmenter(){
+			this->m_DoBFSegmentation = true;
+			this->m_NumberOfIterations = 75;
+		};
 		~Segmenter(){};
 
 		/*

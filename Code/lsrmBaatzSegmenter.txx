@@ -9,8 +9,6 @@ namespace lsrm
 	template<class TImage>
 	BaatzSegmenter<TImage>::BaatzSegmenter() : Superclass()
 	{
-		this->m_DoBFSegmentation = true;
-		this->m_NumberOfIterations = 75;
 	}
 	
 	template<class TImage>
