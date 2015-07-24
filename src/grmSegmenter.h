@@ -45,9 +45,14 @@ namespace grm
 		/* Default constructor and destructor */
 		
 		Segmenter(){
+<<<<<<< HEAD:src/grmSegmenter.h
 			this->m_DoFastSegmentation = false;
 			this->m_NumberOfIterations = 0;
 			this->m_Complete = false;
+=======
+			this->m_DoBFSegmentation = true;
+			this->m_NumberOfIterations = 75;
+>>>>>>> 46b42b66e5053b4108f0c7d195ca8c2fec976f9a:Code/lsrmSegmenter.h
 		};
 		~Segmenter(){};
 
