@@ -1,0 +1,7 @@
+author: Lassalle Pierre
+
+Copyright (c) Centre National d'Études Spatiales. All rights reserved.
+
+This work has been funded by CNES, CS Systèmes d'Information,
+Université Paul Sabatier Toulouse III, and CNRS,
+in the frame of the PHD thesis of Pierre Lassalle.
