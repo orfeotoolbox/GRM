@@ -22,16 +22,8 @@
 
 namespace grm
 {
-
-	template<class TImage>
-<<<<<<< HEAD:src/grmBaatzSegmenter.txx
-=======
-	BaatzSegmenter<TImage>::BaatzSegmenter() : Superclass()
-	{
-	}
 	
 	template<class TImage>
->>>>>>> 46b42b66e5053b4108f0c7d195ca8c2fec976f9a:Code/lsrmBaatzSegmenter.txx
 	void
 	BaatzSegmenter<TImage>::InitFromImage()
 	{
