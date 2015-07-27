@@ -52,18 +52,18 @@ namespace otb
 					AddParameter(ParameterType_OutputFilename, "out", "Ouput Label Image");
 
 					AddParameter(ParameterType_Choice, "criterion", "Homogeneity criterion to use");
-					AddChoice("bs", "Baatz & Schape");
-					AddChoice("ed", "Euclidean Distance");
-					AddChoice("fls", "Full Lambda Schedule");
+					AddChoice("criterion.bs", "Baatz & Schape");
+					AddChoice("criterion.ed", "Euclidean Distance");
+					AddChoice("criterion.fls", "Full Lambda Schedule");
 
 					AddParameter(ParameterType_Float, "threshold", "Threshold for the criterion");
 
 					AddParameter(ParameterType_Int, "niter", "Number of iterations");
-					SetDefaultParameterFloat("niter", 0);
+					SetDefaultParameterInt("niter", 0);
 					MandatoryOff("niter");
 
 					AddParameter(ParameterType_Int, "speed", "Activate it to boost the segmentation speed");
-					SetDefaultParameterFloat("speed", 0);
+					SetDefaultParameterInt("speed", 0);
 					MandatoryOff("speed");
 
 					// For Baatz & Schape
@@ -172,3 +172,4 @@ namespace otb
 	
 } // end of namespace otb
 
+OTB_APPLICATION_EXPORT(otb::Wrapper::otbGRM)
