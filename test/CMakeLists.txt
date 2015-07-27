@@ -1,7 +1,7 @@
 otb_module_test()
 
 otb_test_application(NAME apGRM_BaatzCriterion
-					APP GRM
+					APP otbGRM
 					OPTIONS -in ${INPUTDATA}/QB_Toulouse_Ortho_XS.tif
 					-out ${TEMP}/apGRMLabeledImage.tif int16
 					-criterion bs
@@ -11,7 +11,7 @@ otb_test_application(NAME apGRM_BaatzCriterion
 )
 
 otb_test_application(NAME apGRM_EuclideanDistanceCriterion
-					APP GRM
+					APP otbGRM
 					OPTIONS -in ${INPUTDATA}/QB_Toulouse_Ortho_XS.tif
 					-out ${TEMP}/apGRMLabeledImage.tif int16
 					-criterion ed
@@ -19,7 +19,7 @@ otb_test_application(NAME apGRM_EuclideanDistanceCriterion
 )
 
 otb_test_application(NAME apGRM_FullLambdaScheduleCriterion
-					APP GRM
+					APP otbGRM
 					OPTIONS -in ${INPUTDATA}/QB_Toulouse_Ortho_XS.tif
 					-out ${TEMP}/apGRMLabeledImage.tif int16
 					-criterion fls
@@ -27,7 +27,7 @@ otb_test_application(NAME apGRM_FullLambdaScheduleCriterion
 )
 
 otb_test_application(NAME apGRM_BaatzCriterionWithSpeed
-					APP GRM
+					APP otbGRM
 					OPTIONS -in ${INPUTDATA}/QB_Toulouse_Ortho_XS.tif
 					-out ${TEMP}/apGRMLabeledImage.tif int16
 					-speed 1
@@ -38,7 +38,7 @@ otb_test_application(NAME apGRM_BaatzCriterionWithSpeed
 )
 
 otb_test_application(NAME apGRM_EuclideanDistanceCriterionWithSpeed
-					APP GRM
+					APP otbGRM
 					OPTIONS -in ${INPUTDATA}/QB_Toulouse_Ortho_XS.tif
 					-out ${TEMP}/apGRMLabeledImage.tif int16
 					-speed 1
@@ -47,7 +47,7 @@ otb_test_application(NAME apGRM_EuclideanDistanceCriterionWithSpeed
 )
 
 otb_test_application(NAME apGRM_FullLambdaScheduleCriterionWithSpeed
-					APP GRM
+					APP otbGRM
 					OPTIONS -in ${INPUTDATA}/QB_Toulouse_Ortho_XS.tif
 					-out ${TEMP}/apGRMLabeledImage.tif int16
 					-speed 1
@@ -56,7 +56,7 @@ otb_test_application(NAME apGRM_FullLambdaScheduleCriterionWithSpeed
 )
 
 otb_test_application(NAME apGRM_BaatzCriterionWithFixedNumberOfIterations
-					APP GRM
+					APP otbGRM
 					OPTIONS -in ${INPUTDATA}/QB_Toulouse_Ortho_XS.tif
 					-out ${TEMP}/apGRMLabeledImage.tif int16
 					-niter 75
@@ -67,7 +67,7 @@ otb_test_application(NAME apGRM_BaatzCriterionWithFixedNumberOfIterations
 )
 
 otb_test_application(NAME apGRM_EuclideanDistanceCriterionWithFixedNumberOfIterations
-					APP GRM
+					APP otbGRM
 					OPTIONS -in ${INPUTDATA}/QB_Toulouse_Ortho_XS.tif
 					-out ${TEMP}/apGRMLabeledImage.tif int16
 					-niter 75
@@ -76,7 +76,7 @@ otb_test_application(NAME apGRM_EuclideanDistanceCriterionWithFixedNumberOfItera
 )
 
 otb_test_application(NAME apGRM_FullLambdaScheduleCriterionWithFixedNumberOfIterations
-					APP GRM
+					APP otbGRM
 					OPTIONS -in ${INPUTDATA}/QB_Toulouse_Ortho_XS.tif
 					-out ${TEMP}/apGRMLabeledImage.tif int16
 					-niter 75
