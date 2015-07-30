@@ -1,4 +1,4 @@
-OTB_CREATE_APPLICATION(NAME otbGRM
-					SOURCES otbGRM.cxx
-					LINK_LIBRARIES ${${otb-module}_LIBRARIES}
+OTB_CREATE_APPLICATION(NAME GenericRegionMerging
+					SOURCES GenericRegionMerging.cxx
+					LINK_LIBRARIES ${OTBGRM_LIBRARIES}
 )

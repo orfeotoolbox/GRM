@@ -24,32 +24,33 @@
 #include "grmFullLambdaScheduleSegmenter.h"
 #include "grmBaatzSegmenter.h"
 #include "otbWrapperApplication.h"
+#include "otbWrapperApplicationFactory.h"
 
 namespace otb
 {
 	namespace Wrapper
 	{
-		class otbGRM : public Application
+		class GenericRegionMerging : public Application
 		{
 		public:
-			typedef otbGRM Self;
+			typedef GenericRegionMerging Self;
 			typedef itk::SmartPointer<Self> Pointer;
 
 			typedef FloatVectorImageType ImageType;
 			typedef UInt32ImageType LabelImageType;
 
 			itkNewMacro(Self);
-			itkTypeMacro(otbGRM, otb::Application);
+			itkTypeMacro(GenericRegionMerging, otb::Application);
 
 		private:
 
 			void DoInit()
 				{
-					SetName("otbGRM");
+					SetName("GenericRegionMerging");
 					SetDescription("This application allows to use the Generic Region Merging library (GRM) and provides currently 3 homogeneity criteria: Euclidean Distance, Full Lambda Schedule and Baatz & Schape criterion.");
 
 					AddParameter(ParameterType_InputImage, "in", "Input Image");
-					AddParameter(ParameterType_OutputFilename, "out", "Ouput Label Image");
+					AddParameter(ParameterType_OutputImage, "out", "Ouput Label Image");
 
 					AddParameter(ParameterType_Choice, "criterion", "Homogeneity criterion to use");
 					AddChoice("criterion.bs", "Baatz & Schape");
@@ -172,4 +173,4 @@ namespace otb
 	
 } // end of namespace otb
 
-OTB_APPLICATION_EXPORT(otb::Wrapper::otbGRM)
+OTB_APPLICATION_EXPORT(otb::Wrapper::GenericRegionMerging)

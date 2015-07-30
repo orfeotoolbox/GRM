@@ -1,14 +1,9 @@
-set(${otb-module}_SRC
-	grmBaatzSegmenter.txx
-	grmFullLambdaScheduleSegmenter.txx
-	grmGraphOperations.txx
-	grmGraphToOtbImage.txx
+set(OTBGRM_SRC
 	grmNeighborhood.cxx
-	grmSpringSegmenter.txx
 	lpContour.cxx
 )
 
-add_library(${otb-module} ${${otb-module}_SRC})
-target_link_libraries(${otb_module} ${OTBCommon_LIBRARIES})
+add_library(OTBGRM ${OTBGRM_SRC})
+target_link_libraries(OTBGRM ${OTBCommon_LIBRARIES})
 
-otb_module_target(${otb-module})
+otb_module_target(OTBGRM)

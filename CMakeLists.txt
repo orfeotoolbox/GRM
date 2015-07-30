@@ -21,12 +21,12 @@ else()
         message(STATUS "The compiler ${CMAKE_CXX_COMPILER} has no C++11 support. Please use a different C++ compiler.")
 endif()
 
-set(GRM_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/)
+#set(GRM_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src/)
 
-include_directories(${GRM_INCLUDE_DIR})
+#include_directories(${GRM_INCLUDE_DIR})
 
-project(GRM)
+project(OTBGRM)
 
-set(GRM_LIBRARIES GRM)
+set(OTBGRM_LIBRARIES OTBGRM)
 
 otb_module_impl()
