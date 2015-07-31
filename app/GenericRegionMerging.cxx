@@ -34,6 +34,7 @@ namespace otb
 		{
 		public:
 			typedef GenericRegionMerging Self;
+			typedef Application SuperClass;
 			typedef itk::SmartPointer<Self> Pointer;
 
 			typedef FloatVectorImageType ImageType;
@@ -83,14 +84,10 @@ namespace otb
 			void DoExecute()
 				{
 					
-					
 					// Mandatory parameters
 					// Input Image
 					ImageType::Pointer image = GetParameterImage("in");
 					image->Update();
-
-					// Output label file name.
-					const std::string labelImageFileName = GetParameterString("out");
 
 					// Criterion selected
 					const std::string selectedCriterion = GetParameterString("criterion");
@@ -100,8 +97,6 @@ namespace otb
 
 					const unsigned int niter = GetParameterInt("niter");
 					const int speed = GetParameterInt("speed");
-
-					typedef otb::ImageFileWriter<LabelImageType> LabelImageWriter;
 
 					if(selectedCriterion == "bs")
 					{
@@ -125,11 +120,7 @@ namespace otb
 
 						segmenter.Update();
 
-
-						LabelImageWriter::Pointer labelWriter = LabelImageWriter::New();
-						labelWriter->SetFileName(labelImageFileName);
-						labelWriter->SetInput(segmenter.GetLabeledClusteredOutput());
-						labelWriter->Update();
+						SetParameterOutputImage<LabelImageType>("out", segmenter.GetLabeledClusteredOutput());
 					}
 					else if(selectedCriterion == "ed")
 					{
@@ -144,10 +135,7 @@ namespace otb
 
 						segmenter.Update();
 
-						LabelImageWriter::Pointer labelWriter = LabelImageWriter::New();
-						labelWriter->SetFileName(labelImageFileName);
-						labelWriter->SetInput(segmenter.GetLabeledClusteredOutput());
-						labelWriter->Update();
+						SetParameterOutputImage<LabelImageType>("out", segmenter.GetLabeledClusteredOutput());
 					}
 					else if(selectedCriterion == "fls")
 					{
@@ -162,10 +150,7 @@ namespace otb
 
 						segmenter.Update();
 
-						LabelImageWriter::Pointer labelWriter = LabelImageWriter::New();
-						labelWriter->SetFileName(labelImageFileName);
-						labelWriter->SetInput(segmenter.GetLabeledClusteredOutput());
-						labelWriter->Update();
+						SetParameterOutputImage<LabelImageType>("out", segmenter.GetLabeledClusteredOutput());
 					}
 				}
 		};
