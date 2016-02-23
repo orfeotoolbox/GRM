@@ -51,9 +51,10 @@ namespace lp
 		CreateNewContour(mergedContour, GridToBBox(cid1, mergedBBox, gridSizeX),  borderCells, mergedBBox.m_W, mergedBBox.m_H);
 	}
 
+
 	void ContourOperations::CreateNewContour(Contour& newContour,
 											 const CellIndex cidx,
-											 const std::unordered_set<CellIndex>& setCells,
+											 CellLists& setCells,
 											 const std::size_t bboxWidth,
 											 const std::size_t bboxHeight)
 	{

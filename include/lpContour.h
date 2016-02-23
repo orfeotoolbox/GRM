@@ -89,7 +89,7 @@ namespace lp
 
 		static void CreateNewContour(Contour& newContour,
 									 const CellIndex startCellId,
-									 const std::unordered_set<long unsigned int>& setCells,
+									 CellLists& setCells,
 									 const std::size_t bboxWidth,
 									 const std::size_t bboxHeight);
 
