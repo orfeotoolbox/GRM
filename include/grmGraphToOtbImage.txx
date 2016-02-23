@@ -19,6 +19,7 @@
 #define __GRM_GRAPH_TO_OTBIMAGE_TXX
 #include "grmGraphToOtbImage.h"
 #include "itkImageRegionIterator.h"
+#include "itkGrayscaleFillholeImageFilter.h"
 
 namespace grm
 {
@@ -62,17 +63,13 @@ namespace grm
 			++label;
 		}
 
-		unsigned int pixelValue = 0;
-		for(it.GoToBegin(); !it.IsAtEnd(); ++it)
-		{
-			auto pixel = it.Get();
-			if(pixel == 0)
-				it.Set(pixelValue);
-			else
-				pixelValue = pixel;
-		}
+        // Fill holes
+		typedef itk::GrayscaleFillholeImageFilter<LabelImageType,LabelImageType>  FillholeFilterType;
+		FillholeFilterType::Pointer fillFilter = FillholeFilterType::New();
+		fillFilter->SetInput(label_img);
+		fillFilter->Update();
 		
-		return label_img;
+		return fillFilter->GetOutput();
 	}
 
 	template<class TGraph>
