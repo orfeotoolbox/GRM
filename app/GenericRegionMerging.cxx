@@ -98,6 +98,11 @@ namespace otb
 					const unsigned int niter = GetParameterInt("niter");
 					const int speed = GetParameterInt("speed");
 
+					// Output images
+					LabelImageType::Pointer labelImage = LabelImageType::New();
+					typedef otb::VectorImage<unsigned char, 2> RGBLabelImageType;
+					RGBLabelImageType::Pointer rvbLabelImage = RGBLabelImageType::New();
+
 					if(selectedCriterion == "bs")
 					{
 						const float cw = GetParameterFloat("cw");
@@ -120,7 +125,9 @@ namespace otb
 
 						segmenter.Update();
 
-						SetParameterOutputImage<LabelImageType>("out", segmenter.GetLabeledClusteredOutput());
+						
+						labelImage = segmenter.GetLabeledClusteredOutput();
+						//SetParameterOutputImage<LabelImageType>("out", segmenter.GetLabeledClusteredOutput());
 					}
 					else if(selectedCriterion == "ed")
 					{
@@ -135,7 +142,8 @@ namespace otb
 
 						segmenter.Update();
 
-						SetParameterOutputImage<LabelImageType>("out", segmenter.GetLabeledClusteredOutput());
+						labelImage = segmenter.GetLabeledClusteredOutput();
+						//SetParameterOutputImage<LabelImageType>("out", segmenter.GetLabeledClusteredOutput());
 					}
 					else if(selectedCriterion == "fls")
 					{
@@ -150,8 +158,15 @@ namespace otb
 
 						segmenter.Update();
 
-						SetParameterOutputImage<LabelImageType>("out", segmenter.GetLabeledClusteredOutput());
+						labelImage = segmenter.GetLabeledClusteredOutput();
+						//SetParameterOutputImage<LabelImageType>("out", segmenter.GetLabeledClusteredOutput());
 					}
+					
+					// Set output image projection, origin and spacing for labelImage
+					labelImage->SetProjectionRef(image->GetProjectionRef());
+					labelImage->SetOrigin(image->GetOrigin());
+					labelImage->SetSpacing(image->GetSpacing());
+					SetParameterOutputImage<LabelImageType>("out", labelImage);
 				}
 		};
 	} // end of namespace Wrapper
