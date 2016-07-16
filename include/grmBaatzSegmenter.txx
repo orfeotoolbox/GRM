@@ -69,7 +69,7 @@ namespace grm
 			std = std::sqrt((square_mean - 2*mean*sum + a_sum * mean* mean) / a_sum);
 			spect_cost += (a_sum * std - a1 * n1->m_Std[b] - a2 * n2->m_Std[b]);
 		}
-		spect_cost *= this->m_Param.m_ShapeWeight;
+		spect_cost *= this->m_Param.m_SpectralWeight;
 
 		if(spect_cost < this->m_Threshold)
 		{
@@ -91,7 +91,7 @@ namespace grm
 
 			shape_cost = this->m_Param.m_ShapeWeight * compact_f + (1-this->m_Param.m_ShapeWeight) * smooth_f;
 
-			return (spect_cost + (1-this->m_Param.m_ShapeWeight)*shape_cost);
+			return (spect_cost + (1-this->m_Param.m_SpectralWeight)*shape_cost);
 		}
 		else
 			return spect_cost;
