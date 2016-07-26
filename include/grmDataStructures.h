@@ -15,8 +15,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __GRM_DATA_STRUCTURES_H
-#define __GRM_DATA_STRUCTURES_H
+#ifndef GRM_DATA_STRUCTURES_H
+#define GRM_DATA_STRUCTURES_H
 #include <stdexcept>
 #include <bitset>
 #include <vector>
