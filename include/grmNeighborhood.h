@@ -15,8 +15,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __GRM_NEIGHBORHOOD_H
-#define __GRM_NEIGHBORHOOD_H
+#ifndef GRM_NEIGHBORHOOD_H
+#define GRM_NEIGHBORHOOD_H
 
 enum CONNECTIVITY{FOUR = 0, EIGHT};
 
