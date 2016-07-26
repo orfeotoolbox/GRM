@@ -15,8 +15,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __GRM_GRAPH_TO_OTBIMAGE_TXX
-#define __GRM_GRAPH_TO_OTBIMAGE_TXX
+#ifndef GRM_GRAPH_TO_OTBIMAGE_TXX
+#define GRM_GRAPH_TO_OTBIMAGE_TXX
 #include "grmGraphToOtbImage.h"
 #include "itkImageRegionIterator.h"
 #include "itkGrayscaleFillholeImageFilter.h"
