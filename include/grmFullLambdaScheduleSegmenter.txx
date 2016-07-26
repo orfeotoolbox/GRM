@@ -15,8 +15,10 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __GRM_FULL_LAMBDA_SCHEDULE_SEGMENTER_TXX
-#define __GRM_FULL_LAMBDA_SCHEDULE_SEGMENTER_TXX
+#ifndef GRM_FULL_LAMBDA_SCHEDULE_SEGMENTER_TXX
+#define GRM_FULL_LAMBDA_SCHEDULE_SEGMENTER_TXX
+
+#include "grmFullLambdaScheduleSegmenter.h"
 
 namespace grm
 {
