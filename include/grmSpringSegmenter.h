@@ -15,8 +15,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __GRM_SPRING_SEGMENTER_H
-#define __GRM_SPRING_SEGMENTER_H
+#ifndef GRM_SPRING_SEGMENTER_H
+#define GRM_SPRING_SEGMENTER_H
 #include "grmSegmenter.h"
 
 namespace grm
