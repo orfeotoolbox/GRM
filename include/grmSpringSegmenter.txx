@@ -15,10 +15,11 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __GRM_SPRING_SEGMENTER_TXX
-#define __GRM_SPRING_SEGMENTER_TXX
+#ifndef GRM_SPRING_SEGMENTER_TXX
+#define GRM_SPRING_SEGMENTER_TXX
 #include <otbImageFileReader.h>
 #include <itkImageRegionIterator.h>
+#include "grmSpringSegmenter.h"
 
 namespace grm
 {
