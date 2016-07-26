@@ -15,8 +15,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __GRM_GRAPH_TO_OTBIMAGE_H
-#define __GRM_GRAPH_TO_OTBIMAGE_H
+#ifndef GRM_GRAPH_TO_OTBIMAGE_H
+#define GRM_GRAPH_TO_OTBIMAGE_H
 #include <itkRGBPixel.h>
 #include <itkImageRegion.h>
 #include <otbImage.h>
