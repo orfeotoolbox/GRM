@@ -18,6 +18,7 @@
 #ifndef GRM_GRAPH_OPERATIONS_TXX
 #define GRM_GRAPH_OPERATIONS_TXX
 #include <otbImageFileReader.h>
+#include "grmGraphOperations.h"
 
 namespace grm
 {	
