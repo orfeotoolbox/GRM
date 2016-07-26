@@ -15,8 +15,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __GRM_GRAPH_H
-#define __GRM_GRAPH_H
+#ifndef GRM_GRAPH_H
+#define GRM_GRAPH_H
 #include "grmDataStructures.h"
 #include "lpContour.h"
 
@@ -104,5 +104,3 @@ namespace grm
 	
 } // end of namespace grm
 #endif
-
-
