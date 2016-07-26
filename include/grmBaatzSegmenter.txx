@@ -15,10 +15,11 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __GRM_BAATZ_SEGMENTER_TXX
-#define __GRM_BAATZ_SEGMENTER_TXX
+#ifndef GRM_BAATZ_SEGMENTER_TXX
+#define GRM_BAATZ_SEGMENTER_TXX
 #include <otbImageFileReader.h>
 #include <itkImageRegionIterator.h>
+#include "grmBaatzSegmenter.h"
 
 namespace grm
 {
@@ -117,10 +118,3 @@ namespace grm
 } // end of namespace grm
 
 #endif
-
-
-
-
-
-
-
