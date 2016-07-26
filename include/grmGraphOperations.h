@@ -15,8 +15,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __GRM_GRAPH_OPERATIONS_H
-#define __GRM_GRAPH_OPERATIONS_H
+#ifndef GRM_GRAPH_OPERATIONS_H
+#define GRM_GRAPH_OPERATIONS_H
 #include "grmGraph.h"
 #include "grmNeighborhood.h"
 #include <iostream>
@@ -204,7 +204,3 @@ namespace grm
 
 #include "grmGraphOperations.txx"
 #endif
-
-
-
-
