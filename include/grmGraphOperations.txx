@@ -15,8 +15,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __GRM_GRAPH_OPERATIONS_TXX
-#define __GRM_GRAPH_OPERATIONS_TXX
+#ifndef GRM_GRAPH_OPERATIONS_TXX
+#define GRM_GRAPH_OPERATIONS_TXX
 #include <otbImageFileReader.h>
 
 namespace grm
@@ -547,11 +547,3 @@ namespace grm
 } // end of namespace grm
 
 #endif
-
-
-
-
-
-
-
-
