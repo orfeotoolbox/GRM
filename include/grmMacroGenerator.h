@@ -15,8 +15,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __MG_H
-#define __MG_H
+#ifndef MG_H
+#define MG_H
 
 // Generate automatically get/set methods
 #define GRMGetMacro(type, name) \
