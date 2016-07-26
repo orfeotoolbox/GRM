@@ -15,8 +15,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __GRM_SEGMENTER_H
-#define __GRM_SEGMENTER_H
+#ifndef GRM_SEGMENTER_H
+#define GRM_SEGMENTER_H
 #include "grmMacroGenerator.h"
 #include "grmGraphOperations.h"
 #include "grmGraphToOtbImage.h"
@@ -171,7 +171,3 @@ namespace grm
 } // end of namespace grm
 
 #endif
-
-
-
-
