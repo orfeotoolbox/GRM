@@ -15,8 +15,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __GRM_BAATZ_SEGMENTER_H
-#define __GRM_BAATZ_SEGMENTER_H
+#ifndef GRM_BAATZ_SEGMENTER_H
+#define GRM_BAATZ_SEGMENTER_H
 #include "grmSegmenter.h"
 
 namespace grm
@@ -58,6 +58,3 @@ namespace grm
 } // end of namespace grm
 #include "grmBaatzSegmenter.txx"
 #endif
-
-
-
