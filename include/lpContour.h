@@ -15,8 +15,8 @@
      PURPOSE.  See the above copyright notices for more information.
 
 =========================================================================*/
-#ifndef __LP_CONTOUR_H
-#define __LP_CONTOUR_H
+#ifndef LP_CONTOUR_H
+#define LP_CONTOUR_H
 #include <cassert>
 #include <iostream>
 #include <bitset>
@@ -112,12 +112,3 @@ namespace lp
 	};
 } // end of namespace lp
 #endif
-
-
-
-
-
-
-
-
-
