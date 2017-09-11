@@ -48,7 +48,16 @@ namespace otb
 			void DoInit()
 				{
 					SetName("GenericRegionMerging");
-					SetDescription("This application allows to use the Generic Region Merging library (GRM) and provides currently 3 homogeneity criteria: Euclidean Distance, Full Lambda Schedule and Baatz & Schape criterion.");
+					SetDescription("Segmentation using region merging algorithm");
+          SetDocName("Generic Region Merging");
+          SetDocLongDescription("This application allows to use the Generic "
+            "Region Merging library (GRM).\n It provides currently 3 homogeneity "
+            "criteria: Euclidean Distance, Full Lambda Schedule and Baatz & "
+            "Schape criterion.");
+          SetDocLimitations("This application is not adapted for large images.");
+          SetDocAuthors("Pierre Lassalle");
+          SetDocSeeAlso(" ");
+          AddDocTag(Tags::Segmentation);
 
 					AddParameter(ParameterType_InputImage, "in", "Input Image");
 					AddParameter(ParameterType_OutputImage, "out", "Ouput Label Image");
@@ -75,6 +84,14 @@ namespace otb
 					AddParameter(ParameterType_Float, "sw", "Weight for the spatial homogeneity");
 					SetDefaultParameterFloat("sw", 0.5);
 					MandatoryOff("sw");
+
+          // Example
+          SetDocExampleParameterValue("in", "QB_Toulouse_Ortho_XS.tif");
+          SetDocExampleParameterValue("out", "labels.tif");
+          SetDocExampleParameterValue("criterion", "bs");
+          SetDocExampleParameterValue("threshold", "60");
+					SetDocExampleParameterValue("cw", "0.7");
+					SetDocExampleParameterValue("sw", "0.3");
 				}
 
 			void DoUpdateParameters()
