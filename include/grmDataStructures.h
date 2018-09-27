@@ -20,6 +20,7 @@
 #include <stdexcept>
 #include <bitset>
 #include <vector>
+#include <algorithm>
 
 namespace grm
 {	
