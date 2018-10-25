@@ -180,9 +180,7 @@ namespace otb
 					}
 					
 					// Set output image projection, origin and spacing for labelImage
-					labelImage->SetProjectionRef(image->GetProjectionRef());
-					labelImage->SetOrigin(image->GetOrigin());
-					labelImage->SetSpacing(image->GetSpacing());
+          labelImage->CopyInformation(image);
 					SetParameterOutputImage<LabelImageType>("out", labelImage);
 				}
 		};
