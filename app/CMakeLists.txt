@@ -1,4 +1,4 @@
 OTB_CREATE_APPLICATION(NAME GenericRegionMerging
 					SOURCES GenericRegionMerging.cxx
-					LINK_LIBRARIES ${OTBGRM_LIBRARIES}
+					LINK_LIBRARIES ${OTBGRM_LIBRARIES} ${OTBApplicationEngine_LIBRARIES}
 )
