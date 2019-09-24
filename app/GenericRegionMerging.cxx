@@ -49,7 +49,6 @@ namespace otb
 				{
 					SetName("GenericRegionMerging");
 					SetDescription("Segmentation using region merging algorithm");
-          SetDocName("Generic Region Merging");
           SetDocLongDescription("This application allows to use the Generic "
             "Region Merging library (GRM).\n It provides currently 3 homogeneity "
             "criteria: Euclidean Distance, Full Lambda Schedule and Baatz & "
