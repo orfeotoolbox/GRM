@@ -45,7 +45,7 @@ namespace otb
 
 		private:
 
-			void DoInit()
+			void DoInit() override
 				{
 					SetName("GenericRegionMerging");
 					SetDescription("Segmentation using region merging algorithm");
@@ -93,11 +93,11 @@ namespace otb
 					SetDocExampleParameterValue("sw", "0.3");
 				}
 
-			void DoUpdateParameters()
+			void DoUpdateParameters() override
 				{
 				}
 
-			void DoExecute()
+			void DoExecute() override
 				{
 					
 					// Mandatory parameters
