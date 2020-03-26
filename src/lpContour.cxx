@@ -415,32 +415,32 @@ namespace lp
 											  const std::size_t width,
 											  const std::size_t height)
 	{
-		const unsigned int x = id % width;
-		const unsigned int y = id / width;
+		const std::size_t x = id % width;
+		const std::size_t y = id / width;
 
 		/* top */
-		neighborhood[0] = ( y > 0 ? (id - width) : -1 );
+		neighborhood[0] = (long) ( y > 0 ? (id - width) : -1 );
 
 		/* top right */
-		neighborhood[1] = ( (y > 0 && x < (width - 1) ) ? (id - width + 1) : -1 );
+		neighborhood[1] = (long) ( (y > 0 && x < (width - 1) ) ? (id - width + 1) : -1 );
 		
 		/* right */
-		neighborhood[2] = ( x < (width - 1) ? (id + 1) : -1 );
+		neighborhood[2] = (long) ( x < (width - 1) ? (id + 1) : -1 );
 
 		/* bottom right */
-		neighborhood[3] = ( (x < (width - 1) && y < (height - 1) ) ? (id + 1 + width) : -1);
+		neighborhood[3] = (long) ( (x < (width - 1) && y < (height - 1) ) ? (id + 1 + width) : -1);
 
 		/* bottom */
-		neighborhood[4] = ( y < (height - 1) ? (id + width) : -1 );
+		neighborhood[4] = (long) ( y < (height - 1) ? (id + width) : -1 );
 
 		/* bottom left */
-		neighborhood[5] = ( (y < (height - 1) && x > 0) ? (id + width - 1) : -1 );
+		neighborhood[5] = (long) ( (y < (height - 1) && x > 0) ? (id + width - 1) : -1 );
 		
 		/* left */
-		neighborhood[6] = ( x > 0 ? (id - 1) : -1 );
+		neighborhood[6] = (long) ( x > 0 ? (id - 1) : -1 );
 
 		/* top left */
-		neighborhood[7] = ( (x > 0 && y > 0) ? (id -width - 1) : - 1);	
+		neighborhood[7] = (long) ( (x > 0 && y > 0) ? (id -width - 1) : - 1);	
 	}
 	
 	BoundingBox ContourOperations::MergeBoundingBoxes(const BoundingBox& bb1,
